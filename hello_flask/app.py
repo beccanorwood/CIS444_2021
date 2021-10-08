@@ -10,10 +10,12 @@ USER_PASSWORDS = { "cjardin": "strong password"}
 IMGS_URL = {
             "DEV" : "/static",
             "INT" : "https://cis-444-fall-2021.s3.us-west-2.amazonaws.com/images",
-            "PRD" : "http://d2cbuxq67vowa3.cloudfront.net/images"
+            "PRD" : "http://d2cbuxq67vowa3.cloudfront.net/images",
+            "DEV2": "/static/media"
             }
 
 CUR_ENV = "PRD"
+MY_MEDIA = "DEV2"
 
 @app.route('/') #endpoint
 def index():
@@ -39,8 +41,9 @@ def backp():
 #Assigment 2
 @app.route('/ss1') #endpoint
 def ss1():
-    return render_template('server_time.html', server_time= str(datetime.datetime.now()) )
+    #return render_template('server_time.html', server_time= str(datetime.datetime.now()) )
 
+    return render_template('doggos.html', warning = "You asked for this", media = IMGS_URL[MY_MEDIA] );
 
 app.run(host='0.0.0.0', port=80)
 

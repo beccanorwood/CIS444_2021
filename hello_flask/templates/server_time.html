@@ -3,7 +3,44 @@
     <head>
         <!-- head definitions go here -->
     </head>
+    <style>
+
+
+	.container {
+	 display: grid;
+	 position: fixed;
+	 grid-template-columns: auto auto auto;
+	 background-color: black;
+	 padding: 10px;
+	 top: 50%;
+	 left: 50%;
+	 transform: translate(-50%, -50%);
+	}
+
+	.grid_content {
+	 background-color: gray;
+	 border: 1px solid rgba(0,0,0,0.8);
+	 padding: 20px;
+	 text-align: center; 
+	}
+
+    </style>
     <body>
-	    <h1>Time is {{server_time}}</h1>
+	   <h1>{{warning}}</h1>
+	   <div class = "container">
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>
+			<source src = "{{vid1}}/LuckyGrowling.mp4">
+		</video>
+	   </div>
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>
+			<source src = "{{vid2}}/Chase_Churros.mp4">
+		</video>
+	   </div>
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>>
+			<source src = "{{vid3}}/LuckyBitingTail.mp4">
+	   </div>
     </body>
 </html>
