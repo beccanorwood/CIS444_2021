@@ -2,6 +2,7 @@
 <html>
     <head>
         <!-- head definitions go here -->
+	 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     </head>
     <style>
 
@@ -25,7 +26,7 @@
 	}
 
     </style>
-    <body>
+    <body> 
 	   <h1>{{warning}}</h1>
 	   <div class = "container">
 	   <div class = "grid_content">
@@ -39,8 +40,16 @@
 		</video>
 	   </div>
 	   <div class = "grid_content">
-		<video width = "320" height = "240" controls>>
+		<video width = "320" height = "240" controls>
 			<source src = "{{vid3}}/LuckyBitingTail.mp4">
 	   </div>
+	            <script>
+
+               			 setInterval( function(){ $('#mytime').html( "Client Time is " + new Date());}, 500);
+				 setInterval( function(){ $('#hello').html( "hello");}, 500);
+        	</script>
+	    <h1 id="mytime"></h1>
+	    <h2 id="hello"> </h2>
+	    <h1>Server Time is {{server_time}}</h1>
     </body>
 </html>
