@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 import jwt
 import json
+import simplejson as json
 import datetime
 import bcrypt
 
@@ -104,28 +105,48 @@ def validToken():
 
 
 
+@app.route('/populateBookList', methods=['GET'])
+def populateBookList():
+    
+    #query search in database and return all books
+    #send to frontend without displaying them 
+    #until user provides valid login information
+    #and jwt token access
+
+    cursor = global_db_con.cursor()
+    cursor.execute("SELECT * FROM books")
+    record = cursor.fetchall()
+
+    columns = cursor.description #returns list of tuples where [0] for each is the column header
+    result = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
+
+    print(result)
+
+    return jsonify({'Books': result})
+
+
 #@app.route('/getBooks', methods=['GET'])
-#def getBooks():
+def getBooks():
     #method that requires valid jwt
     #compare decoded jwt with decoded password matching
     #send json object with username, password, and jwt
     #compare decoded with user's name
     #then compare user's password and if it's the same as the decoded password using bcrypt 
 
-#    cursor = global_db_con.cursor()
+    cursor = global_db_con.cursor()
 
-#     return json_response(result = jwt.decode(user_jwt, JWT_SECRET, algorithms=['HS256']))
+    return json_response(result = jwt.decode(user_jwt, JWT_SECRET, algorithms=['HS256']))
 
      #check database to confirm username from database matches password and decoded token matches username
-#    cursor.execute("SELECT * FROM users WHERE username = %", (username,))
-#    record = cursor.fetchone()
+    cursor.execute("SELECT * FROM users WHERE username = %", (username,))
+    record = cursor.fetchone()
         
-#    username_db = record[0]
+    username_db = record[0]
 
-#    if (username_db == token_username): #check for valid token
-#        return ({'message': "You may view the bookstore"})
-#    else:
-#        return ({'message': "Invalid JWT"});
+    if (username_db == token_username): #check for valid token
+        return ({'message': "You may view the bookstore"})
+    else:
+        return ({'message': "Invalid JWT"});
 
     
 

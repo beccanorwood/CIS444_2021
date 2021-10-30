@@ -34,13 +34,29 @@
 		
 		
 		function validToken() {
-			token_removedquotes = user_jwt.slice(1, -1);
+			token_removedquotes = user_jwt.slice(1, -1); /*removes first and last quotes*/
+
 			xml.open('GET', '/validToken?jwt=' + token_removedquotes, true);
 			xml.onload = function(){
 			  console.log(xml.responseURL);
 			}
 			xml.send();
 		};
+
+		$.getJSON("/populateBookList", function(data) {
+		 	var books = [];
+			books = data['books'];
+			console.log(books);
+
+	
+			/*
+			for (let i = 0; i < books.length; i++) {
+				console.log(books[i]);
+			}*/
+
+		});
+
+
 
 		/*Methods that are stricly used to manipulating DOM objects*/
 		$(document).ready(function () {
@@ -65,7 +81,7 @@
 	</div>
 	<div id="books" style="display:none">
 		<h1>Buy me</h1>
-		<select name="cars" id="cars"></select>
+		<select name="books" id="books"></select>
 	</div>
     </body>
 </html>
