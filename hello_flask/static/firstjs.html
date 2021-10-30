@@ -16,20 +16,13 @@
         </div>
 
         <h2>this text</h2>
-    
-        <img  id="myimg" src="/static/bully.gif" style="width:150px;display:none">
+   
+        <script>
+	
+		$.getJSON("/getTime", function(data) {
+			alert( "success" );
+		})		
 
-        <script> 
-            var count = 1;
-            setInterval( function(){ 
-                    $('#mydiv').html( '<h1>count = ' + count + '</h1>');
-                    count = count + 1;
-
-                    if(count == 5){
-                         $('#myimg').show(1000);
-                    }
-
-                }, 1000);
         </script>
 
     </body>

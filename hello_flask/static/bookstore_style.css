@@ -1,0 +1,31 @@
+body {
+  background-color: #B0C4DE;
+}
+
+#signup {
+  display: none;
+}
+
+#welcome, #signup {
+  text-align: center;
+  margin: 25% 20% 0 20%;
+  border-style: groove;
+  border-color: white;
+  border-width: 10px;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px 15px;
+  background-color: #6495ED;
+}
+
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+

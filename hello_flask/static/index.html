@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	     <link rel = "stylesheet" href = "/static/bookstore_style.css"/>
+    </head>
+    <body>
+	 <script>
+
+	    	var user_jwt; /* user token */
+		var xml = new XMLHttpRequest();	
+
+		/*Methods that are strictly for server call/response*/
+		function checkCreds(){
+
+			name = $('#username').val();
+			pwd = $('#password').val();
+
+			$.post('/signup', 
+			{  
+			  username: name,
+			  password: pwd
+			},
+			function(data, status){
+			  /*alert("Data: " + data + "\nStatus:" + status);*/
+			
+			  
+			  user_jwt = JSON.stringify(data['message']);
+			  alert(user_jwt);
+			  validToken();
+			});	
+				
+		};
+		
+		
+		function validToken() {
+			xml.open('GET', '/validToken?jwt=' + user_jwt, true);
+			xml.onload = function(){
+			  console.log(xml.responseURL);
+			}
+			xml.send();
+		};
+
+		/*Methods that are stricly used to manipulating DOM objects*/
+		$(document).ready(function () {
+			$('.signup').on('click', function(){
+				$('#signup').show();
+				$('#welcome').hide();
+			});
+		});
+
+	</script>
+	<div id = "welcome">
+		<h1>Welcome to Neitherstone Norwood Books!</h1>
+		<button class = "button signup">Sign Up!</button>
+		<button class = "button login">Login!</button>
+	</div>
+	<div id="signup">
+  		<label for="username">Username:</label><br>
+  			<input type="text" id="username" name="username" value="John"><br>
+  		<label for="password">Password:</label><br>
+  			<input type="password" id="password" name="password" value="Doe"><br><br>
+  		<input type="submit" value="Signup" onclick = "checkCreds();" >
+	</div>
+	<div id="books" style="display:none">
+		<h1>Buy me</h1>
+		<select name="cars" id="cars"></select>
+	</div>
+    </body>
+</html>

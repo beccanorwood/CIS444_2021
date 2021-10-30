@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div id = header>
+			<h1 id = "bookstore_header">{{input_from_browser}}</h1>
+			<button class = "test_JWT">Test JWT</button>
+			<button class = "login_btn">Login</button>
+			<button class = "sign_up_btn">Sign Up</button>
+		</div>
+		<!--
+		<div id = login>
+			<form action="login" method = "post">
+				<label for "username">Username:</label>
+				<input type = "text" id = "Username" name = "username"<br><br>
+				<label for "password">Password:</label>
+				<input type = "password" id = "Password" name = "password"><br><br>
+				<input type = "submit" value = "Submit" id = "submit_btn">
+			</form>
+		</div>
+		<div id = sign_up>			
+			<form action="/signup" method="post">
+				<label for "username">UserName:</label>
+				<input type = "text" id = "username" name = "username"><br><br>
+				<label for "password">Password:</label>
+				<input type = "password" id = "password" name = "password"><br><br>
+				<input type = "submit" value = "Submit">
+			</form>
+		</div>
+		<div id = books>	
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+		</div>
+		<script>
+			async function checkJWT() {
+				const response = await fetch('/checkJWT');
+				const result = await response.json();
+
+				$('.test_JWT').text(result.text());
+			}
+
+
+		</script>
+		-->
+	</body>
+</html>
