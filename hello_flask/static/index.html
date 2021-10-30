@@ -10,7 +10,10 @@
 	    	var user_jwt; /* user token */
 		var xml = new XMLHttpRequest();	
 
+		/*==================================================*/
 		/*Methods that are strictly for server call/response*/
+		/*=================================================*/
+
 		function checkCreds(){
 
 			name = $('#username').val();
@@ -23,16 +26,22 @@
 			},
 			function(data, status){
 			  /*alert("Data: " + data + "\nStatus:" + status);*/
-			
-			  
-			  user_jwt = JSON.stringify(data['message']);
+			  var value;
+			  validtoken = value == "True" ? true: false
 			  alert(user_jwt);
-			  validToken();
+
+				if (validtoken) {
+				  user_jwt = JSON.stringify(data['message']);
+			  	  validToken();
+				}
+				else{
+				  alert(JSON.stringify(data['message']));
+				}
 			});	
 				
 		};
 		
-		
+		/*Sends a HTTP GET request with user's jwt and returns if the token is valid or not*/
 		function validToken() {
 			token_removedquotes = user_jwt.slice(1, -1); /*removes first and last quotes*/
 
@@ -43,22 +52,21 @@
 			xml.send();
 		};
 
-		$.getJSON("/populateBookList", function(data) {
-		 	var books = [];
-			books = data['books'];
-			console.log(books);
 
-	
-			/*
-			for (let i = 0; i < books.length; i++) {
-				console.log(books[i]);
-			}*/
+		/*Receives a JSON object containing all the books available to purchase*/
+		$.getJSON("/populateBookList", function(data) {
+		 	
+			books = JSON.stringify(data['books']);
+			console.log(books);	
+			alert(books);
 
 		});
 
 
-
+		/*==========================================================*/ 
 		/*Methods that are stricly used to manipulating DOM objects*/
+		/*==========================================================*/ 
+
 		$(document).ready(function () {
 			$('.signup').on('click', function(){
 				$('#signup').show();

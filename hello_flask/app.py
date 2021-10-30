@@ -60,9 +60,9 @@ def signup():
         #jwt with an expiration time of 30 minutes 
         #user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
         user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")  
-        return jsonify({'message': user_jwt})
+        return jsonify({'validJWT': True, 'message': user_jwt})
     else:
-        return jsonify({'message': 'Username is already taken'})
+        return jsonify({'validJWT': False, 'message': 'Username is already taken'})
     
 
 
