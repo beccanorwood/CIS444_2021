@@ -34,7 +34,8 @@
 		
 		
 		function validToken() {
-			xml.open('GET', '/validToken?jwt=' + user_jwt, true);
+			token_removedquotes = user_jwt.slice(1, -1);
+			xml.open('GET', '/validToken?jwt=' + token_removedquotes, true);
 			xml.onload = function(){
 			  console.log(xml.responseURL);
 			}
