@@ -59,6 +59,7 @@
 
 			  	if (tokenisValid) {
 			  		alert("GET method worked! Token is Valid :)");
+					populateBooks();
 				}
 				else {
 			  		alert("GET method worked! Token is not valid though :(");
@@ -70,16 +71,23 @@
 
 		/*Receives a JSON object containing all the books available to purchase*/
 		
-		/*function populateBooks(){
+		function populateBooks(){
 			$.getJSON("/populateBookList", function(data) {
 		 	
-				books = JSON.stringify(data['books']);
-				console.log(books);	
-				alert(books);
+				alert("Populate Books Method reached");
+				bookList = data.Books
+				console.log(bookList);
+
+				for (let i = 0; i < bookList.length; i++) {
+					name = bookList[i]['name'];
+					price = bookList[i]['price'];
+					console.log("Book Name: " + name);
+					console.log("Book Price: " + price);
+				}
 
 			});
 
-		};*/
+		};
 
 
 		/*==========================================================*/ 
