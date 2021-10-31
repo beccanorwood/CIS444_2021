@@ -103,6 +103,27 @@
 				$('#signup').show();
 				$('#welcome').hide();
 			});
+
+
+			$('#booklist').change(function() {
+			  var selectedBook = $(this).val();
+
+			  switch (selectedBook){
+
+			  case "Harry Potter and the Sorcerer's Stone":
+				$('#selectedBook').css('background-image', "url('{{media}}/HP1.jpg')");
+			 	break;
+			  case "Harry Potter and the Chamber of Secrets":
+				$('#selectedBook').css('background-image', "url('{{media}}/HP2.jpg')"); 
+				break;
+			  case "Harry Potter and the Prisoner of Azkaban":                                                                                                                     $('#selectedBook').css('background-image', "url('{{media}}/HP3.jpg')");                                                                                        break;
+			  case "Harry Potter and the Goblet of Fire":                                                                                                                          $('#selectedBook').css('background-image', "url('{{media}}/HP4.jpg')");                                                                                        break;
+			  case "Harry Potter and the Order of the Pheonix":                                                                                                                    $('#selectedBook').css('background-image', "url('{{media}}/HP5.jpg)')");
+				break;
+			  case "Harry Potter and the Half-Blook Prince":                                                                                                                       $('#selectedBook').css('background-image', "url('{{media}}/HP6.jpg)')");
+				break;
+			}
+		  });
 		});
 
 	</script>
@@ -122,10 +143,11 @@
 		<h1 id = "home_greeting"></h1>
 		<button class = "button viewBooks">View Books</button>
 	</div>
-
+	
 	<div id="books" style="display:none">
 		<h1>Buy me</h1>
 		<select name="books" id="booklist"></select>
 	</div>
+	<div id = "selectedBook"></div>
     </body>
 </html>

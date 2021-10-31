@@ -17,11 +17,14 @@ IMGS_URL = {
             "DEV" : "/static",
             "INT" : "https://cis-444-fall-2021.s3.us-west-2.amazonaws.com/images",
             "PRD" : "http://d2cbuxq67vowa3.cloudfront.net/images",
-            "DEV2": "/static/media"
+            "DEV2": "/static/media",
+            "DEV_A3": "/static/media/HPBooks"
             }
 
 CUR_ENV = "PRD"
 MY_MEDIA = "DEV2" #media files for assignment #2
+BOOKSTORE_MEDIA = "DEV_A3"
+
 JWT_SECRET = "who cares?"
 
 global_db_con = get_db() #global database connection
@@ -33,7 +36,7 @@ with open("secret", "r") as f:
 #entry point for login/signup page
 @app.route('/') #endpoint
 def index():
-    return app.send_static_file('index.html')
+    return render_template('index.html', media = IMGS_URL[BOOKSTORE_MEDIA])
 
 #endpoint that will receive user input to sign in and will validate credentials by checking database 
 @app.route('/signup', methods=['POST'])
