@@ -32,7 +32,7 @@
 			  	var isValidToken = data.validJWT;
 				console.log("IsValidToken: " + isValidToken);
 
-				if (isValidToken == "True") {
+				if (isValidToken) {
 				  user_jwt = data.message;
 				  debug_jwt = JSON.stringify(data['message']);
 				  alert("User JWT: " + debug_jwt);

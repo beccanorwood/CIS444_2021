@@ -59,11 +59,11 @@ def signup():
         #jwt with an expiration time of 30 minutes 
         #user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
         user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
-        return jsonify({'validJWT': 'True', 'message': user_jwt})
+        return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
-        return jsonify({'validJWT': 'False', 'message': 'Username is already taken'})
-    
+        return jsonify({'validJWT': False, 'message': 'Username is already taken'})
+   
 
 
 @app.route('/login', methods=['GET'])
@@ -82,7 +82,7 @@ def login():
         #compare salted password from database from user's password 
         salted_password = record[1]
         #compare password from form with decoded password
-        if (password == bcrypt.checkpw( bytes(password, 'utf-8'), salted_password.encode() )): 
+        if (bcrypt.checkpw( bytes(password, 'utf-8'), salted_password.encode() )): 
             return jsonify({'message': 'valid pasword'})
         else:
             return jsonify({'message': 'invalid password'})
@@ -102,9 +102,9 @@ def validToken():
     print(token)
 
     if not jwt.decode(token, JWT_SECRET, algorithms=["HS256"]): #user has valid token
-        return jsonify({'validToken': 'False'})
+        return jsonify({'validToken': False})
     else:
-        return jsonify({'validToken': 'True'})
+        return jsonify({'validToken': True})
 
 
 
