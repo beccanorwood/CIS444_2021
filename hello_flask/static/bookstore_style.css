@@ -6,7 +6,7 @@ body {
   display: none;
 }
 
-#welcome, #homepage, #signup {
+#welcome, #homepage, #signup, #books {
   text-align: center;
   margin: 25% 20% 0 20%;
   border-style: groove;

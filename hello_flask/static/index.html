@@ -83,12 +83,16 @@
 					price = bookList[i]['price'];
 					console.log("Book Name: " + name);
 					console.log("Book Price: " + price);
+					$('#booklist').append(`<option value="${name}">${name}</option>`);
+					$('#books').show();
+					$('#signup').hide();
+
 				}
 
 			});
 
 		};
-
+ 		
 
 		/*==========================================================*/ 
 		/*Methods that are stricly used to manipulating DOM objects*/
@@ -121,7 +125,7 @@
 
 	<div id="books" style="display:none">
 		<h1>Buy me</h1>
-		<select name="books" id="books"></select>
+		<select name="books" id="booklist"></select>
 	</div>
     </body>
 </html>
