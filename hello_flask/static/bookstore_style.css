@@ -2,11 +2,11 @@ body {
   background-color: #B0C4DE;
 }
 
-#signup {
+#signup, #homepage {
   display: none;
 }
 
-#welcome, #signup {
+#welcome, #homepage, #signup {
   text-align: center;
   margin: 25% 20% 0 20%;
   border-style: groove;

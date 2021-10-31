@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 import jwt
 import json
-import simplejson as json
 import datetime
 import bcrypt
 
@@ -56,13 +55,14 @@ def signup():
     if newuser is None:
         cursor.execute("INSERT into users (username, password) VALUES (%s, %s);", (username, salted_password.decode('utf-8'),)) #insert new user with encrypted password to db
         global_db_con.commit() #update db
-        
+        cursor.close() 
         #jwt with an expiration time of 30 minutes 
         #user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
-        user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")  
-        return jsonify({'validJWT': True, 'message': user_jwt})
+        user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
+        return jsonify({'validJWT': 'True', 'message': user_jwt})
     else:
-        return jsonify({'validJWT': False, 'message': 'Username is already taken'})
+        cursor.close()
+        return jsonify({'validJWT': 'False', 'message': 'Username is already taken'})
     
 
 
@@ -96,12 +96,15 @@ def login():
 def validToken():
 
     token = request.args.get('jwt')
-    print(token)
+    #json_data = request.json
+    #token = json_data['jwt']
     
-    if jwt.decode(token, JWT_SECRET, algorithms=["HS256"]): #user has valid token
-        return jsonify({'valid Token': True})
+    print(token)
+
+    if not jwt.decode(token, JWT_SECRET, algorithms=["HS256"]): #user has valid token
+        return jsonify({'validToken': 'False'})
     else:
-        return jsonify({'valid Token': False})
+        return jsonify({'validToken': 'True'})
 
 
 

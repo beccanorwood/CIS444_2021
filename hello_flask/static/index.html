@@ -7,8 +7,7 @@
     <body>
 	 <script>
 
-	    	var user_jwt; /* user token */
-		var xml = new XMLHttpRequest();	
+	    	var user_jwt; /* user token */	
 
 		/*==================================================*/
 		/*Methods that are strictly for server call/response*/
@@ -26,41 +25,61 @@
 			},
 			function(data, status){
 			  /*alert("Data: " + data + "\nStatus:" + status);*/
-			  var value;
-			  validtoken = value == "True" ? true: false
-			  alert(user_jwt);
+			  /*var value = data['validJWT']*/
+			  /*var json = JSON.parse(data);*/
+			  		
 
-				if (validtoken) {
-				  user_jwt = JSON.stringify(data['message']);
-			  	  validToken();
+			  	var isValidToken = data.validJWT;
+				console.log("IsValidToken: " + isValidToken);
+
+				if (isValidToken == "True") {
+				  user_jwt = data.message;
+				  debug_jwt = JSON.stringify(data['message']);
+				  alert("User JWT: " + debug_jwt);
+				  getValidToken();
 				}
 				else{
-				  alert(JSON.stringify(data['message']));
+				  alert(JSON.stringify(data['message']) + "this is a failed result");
 				}
+			
 			});	
 				
 		};
-		
-		/*Sends a HTTP GET request with user's jwt and returns if the token is valid or not*/
-		function validToken() {
-			token_removedquotes = user_jwt.slice(1, -1); /*removes first and last quotes*/
 
-			xml.open('GET', '/validToken?jwt=' + token_removedquotes, true);
-			xml.onload = function(){
-			  console.log(xml.responseURL);
-			}
-			xml.send();
+		
+		function getValidToken() {
+			$.get('/validToken', {
+			
+				"jwt" : user_jwt
+			},
+			function(data, status) {
+		  	  
+				var tokenisValid = data.validToken  
+		  	  	console.log("Token is Valid: " + tokenisValid);
+
+			  	if (tokenisValid) {
+			  		alert("GET method worked! Token is Valid :)");
+				}
+				else {
+			  		alert("GET method worked! Token is not valid though :(");
+				}
+		  	});
 		};
 
+		/*Sends a HTTP GET request with user's jwt and returns valid token*/
 
 		/*Receives a JSON object containing all the books available to purchase*/
-		$.getJSON("/populateBookList", function(data) {
+		
+		/*function populateBooks(){
+			$.getJSON("/populateBookList", function(data) {
 		 	
-			books = JSON.stringify(data['books']);
-			console.log(books);	
-			alert(books);
+				books = JSON.stringify(data['books']);
+				console.log(books);	
+				alert(books);
 
-		});
+			});
+
+		};*/
 
 
 		/*==========================================================*/ 
@@ -82,11 +101,16 @@
 	</div>
 	<div id="signup">
   		<label for="username">Username:</label><br>
-  			<input type="text" id="username" name="username" value="John"><br>
+  			<input type="text" id="username" name="username"><br>
   		<label for="password">Password:</label><br>
-  			<input type="password" id="password" name="password" value="Doe"><br><br>
+  			<input type="password" id="password" name="password"><br><br>
   		<input type="submit" value="Signup" onclick = "checkCreds();" >
 	</div>
+	<div id = "homepage">
+		<h1 id = "home_greeting"></h1>
+		<button class = "button viewBooks">View Books</button>
+	</div>
+
 	<div id="books" style="display:none">
 		<h1>Buy me</h1>
 		<select name="books" id="books"></select>
