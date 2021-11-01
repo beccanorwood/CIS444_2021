@@ -8,8 +8,8 @@ body {
 
 .book-container {
   display: grid;
-  grid-template-columns: auto auto auto;
-  padding: 10px;
+  grid-template-columns: auto;
+  grid-gap: 20px;
 }
 
 .book {
@@ -20,7 +20,7 @@ body {
 
 #welcome, #homepage, #userInfo, #books {
   text-align: center;
-  margin: 25% 20% 0 20%;
+  margin: 10% 20% 0 20%;
   border-style: groove;
   border-color: white;
   border-width: 10px;

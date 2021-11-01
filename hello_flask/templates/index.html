@@ -9,6 +9,7 @@
 
 	    	var user_jwt; /* user token */	
 		var user_state;
+		const book_selection = new Map();
 		const currState = {NEWUSER: "newuser", USER: "user" };
 		
 		/*=================================================================================*/
@@ -81,23 +82,19 @@
 				for (let i = 0; i <bookList.length; i++) {
 					name = bookList[i]['name'];
 					price = bookList[i]['price'];
-					$('.book').eq(i).text(name);
+					book_selection.set('Book' + i, {book_name: name, book_price: price}) 
+					img = 'HP' + (i+1).toString();
+					console.log(img);
+					$('.book').eq(i).text(book_selection.get('Book' + i).book_name);
+					$('.book').eq(i).append('<img src = "{{media}}/' + img + '.jpg" height = "90px" width="90px">');
+					$('.book').eq(i).hover(function() {
+						$('.book').eq(i).text('$' + book_selection.get('Book' + i).book_price);
+					}, function() {
+						$('.book').eq(i).text(book_selection.get('Book' + i).book_name);
+					});
 					$('#books').show();
 					$('#signup').hide();
 				}
-
-
-				/*
-				for (let i = 0; i < bookList.length; i++) {
-					name = bookList[i]['name'];
-					price = bookList[i]['price'];
-					console.log("Book Name: " + name);
-					console.log("Book Price: " + price);
-					$('#booklist').append(`<option value="${name}">${name}</option>`);
-					$('#books').show();
-					$('#signup').hide();
-
-				}*/
 
 			});
 
@@ -122,6 +119,9 @@
 				$('#welcome').hide();
 				$('#userInfo').show();
 			});
+
+			$('.book').eq
+
 
 			$('.buy').on('click', function(){
 				var selectedBook = $('#booklist').find(":selected").text();
@@ -176,10 +176,6 @@
 			<div class = "book"></div>
 		</div>
 	</div>
-		<!--<label>Book Name: </label>
-		<select name="books" id="booklist"></select>
-		<label id = "book_price">Price: </label><br>
-		<label id = "price"></label>
-		<button class = "button buy">Buy</button>-->	
+	<div><button class = "button buy">Buy</button></div>
     </body>
 </html>
