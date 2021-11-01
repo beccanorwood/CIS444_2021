@@ -6,6 +6,18 @@ body {
   display: none;
 }
 
+.book-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+.book {
+  padding: 20px;
+  font-size: 25px;
+  text-align: center;
+}
+
 #welcome, #homepage, #userInfo, #books {
   text-align: center;
   margin: 25% 20% 0 20%;
@@ -16,11 +28,6 @@ body {
 
 #booklist {
   margin-bottom: 10%;
-}
-
-#selectedBook {
-  display: none;
-  float: right;
 }
 
 .button {

@@ -78,6 +78,16 @@
 				bookList = data.Books
 				console.log(bookList);
 
+				for (let i = 0; i <bookList.length; i++) {
+					name = bookList[i]['name'];
+					price = bookList[i]['price'];
+					$('.book').eq(i).text(name);
+					$('#books').show();
+					$('#signup').hide();
+				}
+
+
+				/*
 				for (let i = 0; i < bookList.length; i++) {
 					name = bookList[i]['name'];
 					price = bookList[i]['price'];
@@ -87,7 +97,7 @@
 					$('#books').show();
 					$('#signup').hide();
 
-				}
+				}*/
 
 			});
 
@@ -156,11 +166,20 @@
 	
 	<div id="books">
 		<h1>Available Books</h1>
-		<label>Book Name: </label>
+		<div class = "book-container">
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+			<div class = "book"></div>
+		</div>
+	</div>
+		<!--<label>Book Name: </label>
 		<select name="books" id="booklist"></select>
 		<label id = "book_price">Price: </label><br>
-		<button class = "button buy">Buy</button>
-	</div>
-	<div id = "selectedBook"></div>
+		<label id = "price"></label>
+		<button class = "button buy">Buy</button>-->	
     </body>
 </html>
