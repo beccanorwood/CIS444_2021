@@ -2,7 +2,7 @@ body {
   background-color: #B0C4DE;
 }
 
-#userInfo, #homepage {
+#userInfo, #homepage, #books{
   display: none;
 }
 

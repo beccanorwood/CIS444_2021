@@ -88,7 +88,7 @@
 			},
 			function(data, status) {
 		  	  
-				var tokenisValid = data.validToken  
+				var tokenisValid = data.validToken;  
 		  	  	console.log("Token is Valid: " + tokenisValid);
 
 			  	if (tokenisValid) {
@@ -101,8 +101,8 @@
 		  	});
 		};
 
-		/*Sends a HTTP GET request with user's jwt and returns valid token*/
 
+		/*Sends a HTTP GET request with user's jwt and returns valid token*/
 		/*Receives a JSON object containing all the books available to purchase*/
 		
 		function populateBooks(){
@@ -147,28 +147,25 @@
 				$(':submit').attr('value', 'Login');
 			});
 
+			$('.buy').on('click', function(){
+				$.get('/getBooks', {
+					'jwt': user_jwt
+				},
+				function(data, status) {
+					
+					var purchaseComplete = data.Book_Purchased;
+					console.log("Get Books Method: " + purchaseComplete);
+
+					if (purchaseComplete) {
+						alert("Book Purchased");
+					}
+					else {
+						alert("Purchase Unsuccessful");
+					}
+				});
+			});
+
 		});
-
-			/*
-			$('#booklist').change(function() {
-			  var selectedBook = $(this).val();
-
-			  switch (selectedBook){
-
-			  case "Harry Potter and the Sorcerer's Stone":
-				$('#selectedBook').css('background-image', "url('{{media}}/HP1.jpg')");
-			 	break;
-			  case "Harry Potter and the Chamber of Secrets":
-				$('#selectedBook').css('background-image', "url('{{media}}/HP2.jpg')"); 
-				break;
-			  case "Harry Potter and the Prisoner of Azkaban":                                                                                                                     $('#selectedBook').css('background-image', "url('{{media}}/HP3.jpg')");                                                                                        break;
-			  case "Harry Potter and the Goblet of Fire":                                                                                                                          $('#selectedBook').css('background-image', "url('{{media}}/HP4.jpg')");                                                                                        break;
-			  case "Harry Potter and the Order of the Pheonix":                                                                                                                    $('#selectedBook').css('background-image', "url('{{media}}/HP5.jpg)')");
-				break;
-			  case "Harry Potter and the Half-Blook Prince":                                                                                                                       $('#selectedBook').css('background-image', "url('{{media}}/HP6.jpg)')");
-				break;
-			}
-		  });*/
 
 		
 
@@ -190,9 +187,12 @@
 		<button class = "button viewBooks">View Books</button>
 	</div>
 	
-	<div id="books" style="display:none">
-		<h1>Buy me</h1>
+	<div id="books">
+		<h1>Available Books</h1>
+		<label>Book Name: </label>
 		<select name="books" id="booklist"></select>
+		<label id = "book_price">Price: </label><br>
+		<button class = "button buy">Buy</button>
 	</div>
 	<div id = "selectedBook"></div>
     </body>
