@@ -69,9 +69,6 @@ def checkCreds():
 @app.route('/signup', methods=['POST'])
 def signup(name, pwd):
     
-    #name = request.form['username']
-    #pwd = request.form['password']
-
     cursor = global_db_con.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (name,)) #to check if username is available 
     salted_password = bcrypt.hashpw( bytes(pwd, 'utf-8'), bcrypt.gensalt(10)) #encrypt password 
@@ -98,10 +95,6 @@ def signup(name, pwd):
 @app.route('/login', methods=['POST'])
 def login(name, pwd):
     
-    name = request.form['username']
-    pwd = request.form['password']
-
-
     cursor = global_db_con.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (name,))
     record = cursor.fetchone()
