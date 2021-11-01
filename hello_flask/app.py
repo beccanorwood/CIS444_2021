@@ -47,23 +47,32 @@ def index():
                                     #End of entry point#
 ###################################################################################################
 
+###################################################################################################
+                #Method to check users' state and either get info from signup or login
+###################################################################################################
+@app.route('/userState', methods=['POST'])
+def checkCreds():
+
+    user_state = request.form['state']
+    username = request.form['username']
+    password = request.form['password']
+
+    if user_state == 'newuser':
+        return signup(username, password)
+    else:
+        return login(username, password)
 
 ###################################################################################################
             #Signup endpoint to verify user input to DB & create JWT on success
 ###################################################################################################
 
 @app.route('/signup', methods=['POST'])
-def signup():
+def signup(name, pwd):
     
-    name = request.form['username']
-    pwd = request.form['password']
+    #name = request.form['username']
+    #pwd = request.form['password']
 
     cursor = global_db_con.cursor()
-
-    print(username)
-    print(password)
-
-
     cursor.execute("SELECT * FROM users WHERE username = %s", (name,)) #to check if username is available 
     salted_password = bcrypt.hashpw( bytes(pwd, 'utf-8'), bcrypt.gensalt(10)) #encrypt password 
     newuser = cursor.fetchone()
@@ -76,7 +85,7 @@ def signup():
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
-        return jsonify({'validJWT': False, 'message': 'Username is already taken'})
+        return jsonify({'validJWT': False, 'message': 'Signup Error'})
    
 ###################################################################################################
                                     #End of signup endpoint
@@ -87,7 +96,7 @@ def signup():
 ###################################################################################################
 
 @app.route('/login', methods=['POST'])
-def login():
+def login(name, pwd):
     
     name = request.form['username']
     pwd = request.form['password']
@@ -99,7 +108,7 @@ def login():
 
     if record is None:
         cursor.close()
-        return jsonify({'validCreds:': False, 'validToken': False, 'message': 'Error! Account not found'})
+        return jsonify({'validJWT': False, 'message': 'Login Error'})
     else:
         #compare salted password from database from user's password 
         salted_password = record[2]
@@ -108,9 +117,9 @@ def login():
         #compare password from form with decoded password
         if (bcrypt.checkpw( bytes(pwd, 'utf-8'), salted_password.encode() )): 
             user_jwt = JWT(name, pwd)
-            return jsonify({'validCreds': True, 'validToken': True, 'message': user_jwt})
+            return jsonify({'validJWT': True, 'message': user_jwt})
         else:
-            return jsonify({'validCreds': False, 'validToken': False, 'message': 'Incorrect password. Please try again'})
+            return jsonify({'validJWT': False, 'message': 'Login Error'})
 
 ###################################################################################################
                                     #Method that creates JWT

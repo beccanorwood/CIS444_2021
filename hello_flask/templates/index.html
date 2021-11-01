@@ -8,26 +8,25 @@
 	 <script>
 
 	    	var user_jwt; /* user token */	
-
-		/*==================================================*/
-		/*Methods that are strictly for server call/response*/
-		/*=================================================*/
+		var user_state;
+		const currState = {NEWUSER: "newuser", USER: "user" };
+		
+		/*=================================================================================*/
+					/*Methods that are strictly for server call*/
+		/*=================================================================================*/
 
 		function checkCreds(){
 
 			name = $('#username').val();
 			pwd = $('#password').val();
 
-			$.post('/signup', 
-			{  
+			$.post('/userState',
+			{ 
+			  state: user_state,
 			  username: name,
 			  password: pwd
 			},
-			function(data, status){
-			  /*alert("Data: " + data + "\nStatus:" + status);*/
-			  /*var value = data['validJWT']*/
-			  /*var json = JSON.parse(data);*/
-			  		
+			function(data, status){	
 
 			  	var isValidToken = data.validJWT;
 				console.log("IsValidToken: " + isValidToken);
@@ -36,6 +35,7 @@
 				  user_jwt = data.message;
 				  debug_jwt = JSON.stringify(data['message']);
 				  alert("User JWT: " + debug_jwt);
+				  $('#userInfo').hide();
 				  getValidToken();
 				}
 				else{
@@ -45,41 +45,6 @@
 			});	
 				
 		};
-
-		function validateCreds() {
-			
-			name = $('#username').val();
-			pwd = $('#password').val();
-
-			$.post('/login',
-			{
-			  username: name,
-			  password: pwd
-			},
-			function(data, status) {
-			 	
-				var userisValid = data.validCreds;
-				console.log("User is Valid: " + userisValid);
-
-				if(userisValid) {
-				  user_jwt = data.message;
-				  $('#userInfo').hide();
-				  getValidToken();
-				}
-				else {
-				  response = data.message
-					switch (response) {
-					
-					case "Error! Account not found":
-						alert(JSON.stringify(response));
-					case "Incorrect Password. Please try again":
-						alert(JSON.stringify(response));
-					}
-				}
-			});
-
-		};
-
 		
 		function getValidToken() {
 			$.get('/validToken', {
@@ -128,23 +93,23 @@
 		};
  		
 
-		/*==========================================================*/ 
+		/*=================================================================================*/ 
 		/*Methods that are stricly used to manipulating DOM objects*/
-		/*==========================================================*/ 
+		/*=================================================================================*/ 
 
 		$(document).ready(function () {
 
 			$('.signupbtn').on('click', function(){
+				user_state = currState.NEWUSER;
 				$('#userInfo').show();
 				$('#welcome').hide();
 			});
 
 
 			$('.loginbtn').on('click', function(){
+				user_state = currState.USER;
 				$('#welcome').hide();
 				$('#userInfo').show();
-				$(':submit').attr('onclick', 'validateCreds()');
-				$(':submit').attr('value', 'Login');
 			});
 
 			$('.buy').on('click', function(){
@@ -154,8 +119,6 @@
 				function(data, status) {
 					
 					var purchaseComplete = data.Book_Purchased;
-					console.log("Get Books Method: " + purchaseComplete);
-
 					if (purchaseComplete) {
 						alert("Book Purchased");
 					}
@@ -180,7 +143,7 @@
   			<input type="text" id="username" name="username"><br>
   		<label for="password">Password:</label><br>
   			<input type="password" id="password" name="password"><br><br>
-  		<input type="submit" value="Signup" onclick = "checkCreds();" >
+  		<input type="submit" value="Submit" onclick = "checkCreds();" >
 	</div>
 	<div id = "homepage">
 		<h1 id = "home_greeting"></h1>
