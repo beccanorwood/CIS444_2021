@@ -163,8 +163,6 @@ def populateBookList():
     result = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
     cursor.close()
 
-    print(result)
-
     return jsonify({'Books': result})
 
 ###################################################################################################
@@ -180,6 +178,8 @@ def populateBookList():
 def getBooks():
 
     token = request.args.get('jwt')
+    selectedBook = request.args.get('book')
+
     cursor = global_db_con.cursor()
 
     isTokenValid = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -188,14 +188,11 @@ def getBooks():
     if (isTokenValid):
         #query username and password in database and select book to purchase 
         cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+
         userInfo = cursor.fetchone()
-
-        print(userInfo)
-
         userid = userInfo[0]
-        print(userid)
 
-        cursor.execute("INSERT into purchased_books (user_id, book_id, purchase_time) VALUES (%s, %s, %s);", (userid, username, datetime.datetime.now(),))
+        cursor.execute("INSERT into purchased_books (user_id, book_id, purchase_time) VALUES (%s, %s, %s);", (userid, selectedBook, datetime.datetime.now(),))
         global_db_con.commit()
         cursor.close()
         return jsonify({'Book_Purchased': True})

@@ -66,9 +66,10 @@
 		  	});
 		};
 
-
-		/*Sends a HTTP GET request with user's jwt and returns valid token*/
-		/*Receives a JSON object containing all the books available to purchase*/
+		/*=================================================================================*/
+			/*Sends a HTTP GET request with user's jwt and returns valid token*/
+			/*Receives a JSON object containing all the books available to purchase*/
+		/*=================================================================================*/
 		
 		function populateBooks(){
 			$.getJSON("/populateBookList", function(data) {
@@ -94,7 +95,7 @@
  		
 
 		/*=================================================================================*/ 
-		/*Methods that are stricly used to manipulating DOM objects*/
+				/*Methods that are stricly used to manipulating DOM objects*/
 		/*=================================================================================*/ 
 
 		$(document).ready(function () {
@@ -113,8 +114,11 @@
 			});
 
 			$('.buy').on('click', function(){
+				var selectedBook = $('#booklist').find(":selected").text();
+
 				$.get('/getBooks', {
-					'jwt': user_jwt
+					'jwt': user_jwt,
+					'book': selectedBook
 				},
 				function(data, status) {
 					

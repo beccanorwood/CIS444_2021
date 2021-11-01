@@ -2,7 +2,7 @@ body {
   background-color: #B0C4DE;
 }
 
-#userInfo, #homepage, #books{
+#userInfo, #homepage, #books, #book_price {
   display: none;
 }
 
