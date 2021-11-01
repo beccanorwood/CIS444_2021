@@ -61,7 +61,8 @@ def signup():
         cursor.close() 
         #jwt with an expiration time of 30 minutes 
         #user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
-        user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
+        #user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
+        user_jwt = createToken(username, password)
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
@@ -69,28 +70,41 @@ def signup():
    
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
     #only validate JWT for user when they login since they will have valid one when they sign in?
     #save username & password from frontend and user those to retrieve token
-    
+    username = request.form['username']
+    password = request.form['password']
+
+
     #decode jwt and compare to username and password in db
     cursor = global_db_con.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
     record = cursor.fetchone()
 
     if record is None:
-        return jsonify({'message': 'User not found'})
+        cursor.close()
+        return jsonify({'validCreds:': False, 'validToken': False, 'message': 'Error! Account not found'})
     else:
         #compare salted password from database from user's password 
-        salted_password = record[1]
+        salted_password = record[2]
+        print("Salted Password: " + salted_password)
+        cursor.close()
         #compare password from form with decoded password
         if (bcrypt.checkpw( bytes(password, 'utf-8'), salted_password.encode() )): 
-            return jsonify({'message': 'valid pasword'})
+            #user_jwt = jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
+            user_jwt = createToken(username, password)
+            return jsonify({'validCreds': True, 'validToken': True, 'message': user_jwt})
         else:
-            return jsonify({'message': 'invalid password'})
+            return jsonify({'validCreds': False, 'validToken': False, 'message': 'Incorrect password. Please try again'})
 
 
+@app.route('/createToken', methods=['GET'])
+def createToken(username, password):
+    
+    return jwt.encode({'user': username}, JWT_SECRET, algorithm="HS256")
+    
 
 
 #enpoint that will be a POST to receive jwt for validation
