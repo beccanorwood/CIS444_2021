@@ -20,7 +20,7 @@ body {
 
 #welcome, #homepage, #userInfo, #books {
   text-align: center;
-  margin: 10% 20% 0 20%;
+  margin: 10% 10% 0 10%;
   border-style: groove;
   border-color: white;
   border-width: 10px;

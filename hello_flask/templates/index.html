@@ -82,16 +82,14 @@
 				for (let i = 0; i <bookList.length; i++) {
 					name = bookList[i]['name'];
 					price = bookList[i]['price'];
-					book_selection.set('Book' + i, {book_name: name, book_price: price}) 
-					img = 'HP' + (i+1).toString();
-					console.log(img);
-					$('.book').eq(i).text(book_selection.get('Book' + i).book_name);
-					$('.book').eq(i).append('<img src = "{{media}}/' + img + '.jpg" height = "90px" width="90px">');
-					$('.book').eq(i).hover(function() {
-						$('.book').eq(i).text('$' + book_selection.get('Book' + i).book_price);
-					}, function() {
-						$('.book').eq(i).text(book_selection.get('Book' + i).book_name);
-					});
+					/*book_selection.set('Book' + i, {book_name: name, book_price: price})*/ 
+					var img = 'HP' + (i+1).toString();
+					imgpath = "{{media}}"/img.jpg;
+					book_selection.set('Book' + i, {book_name: name, book_price: price, book_imgpath: imgpath})
+					$('.book').eq(i).text(book_selection.get('Book' + i).book_name + " ");
+					$('.book').eq(i).append('<img src = "{{media}}/' + img + '.jpg" height = "90px" width="90px">');  
+					$('.book').eq(i).append('\nPrice: ' + '$' +  book_selection.get('Book' + i).book_price);
+
 					$('#books').show();
 					$('#signup').hide();
 				}
