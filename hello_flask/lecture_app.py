@@ -102,43 +102,6 @@ def hellodb():
     first,second = cur.fetchone()
     return json_response(a=first, b=second) #returns text displaying the query from execute statement by db cursor 
 
-""" Assignment 3 begins 
-""" 
-""" Fullstack Application using encryption, psql, and jwt 
-"""
-"""
-"""
-
-###Beginning of Assignment 3 -> FullStack Bookstore Appliction 
-@app.route('/neitherstone_norwood_books') #entry point of application
-def bookstore():
-    return render_template('bookstore.html', bookstore_name = "Neitherstone Norwood Books") 
-
-
-#endpoint that will receive user input to sign in and will validate credentials by checking database 
-@app.route('/signup', methods=["POST"])
-def signup():
-    
-    username = request.form['username']
-    password = request.form['password']
-
-    cursor = global_db_con.cursor()
-
-    print(username)
-    print(password)
-    cursor.execute("SELECT * FROM users WHERE name = %s", (username,)) #to check if username is available 
-    salted_password = bcrypt.hashpw( bytes(password, 'utf-8'), bcrypt.gensalt(10)) #encrypt password 
-    newuser = cursor.fetchone()
-
-    if newuser is None:
-        cursor.execute("INSERT into users (name, password) VALUES (%s, %s)", (username, salted_password)) #insert new user with encrypted password to db
-
-    global_db_con.commit() #update db
-    
-    #jwt with an expiration time of 30 minutes 
-    user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
-    return json_response(jwt = user_jwt)
-
 
 
 app.run(host='0.0.0.0', port=80)
