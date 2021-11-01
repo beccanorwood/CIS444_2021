@@ -23,9 +23,9 @@ IMGS_URL = {
 
 CUR_ENV = "PRD"
 MY_MEDIA = "DEV2" #media files for assignment #2
-BOOKSTORE_MEDIA = "DEV_A3"
+BOOKSTORE_MEDIA = "DEV_A3" #A3 media files
 
-JWT_SECRET = "who cares?"
+JWT_SECRET = "Jesus saves, everyone else takes 2D12 damage"
 
 global_db_con = get_db() #global database connection
 
@@ -33,12 +33,25 @@ global_db_con = get_db() #global database connection
 with open("secret", "r") as f:
     JWT_SECRET = f.read()
 
-#entry point for login/signup page
+
+###################################################################################################
+                                #Entry point of CIS444_A3
+###################################################################################################
+
+#entry point for 
 @app.route('/') #endpoint
 def index():
     return render_template('index.html', media = IMGS_URL[BOOKSTORE_MEDIA])
 
-#endpoint that will receive user input to sign in and will validate credentials by checking database 
+###################################################################################################
+                                    #End of entry point#
+###################################################################################################
+
+
+###################################################################################################
+            #Signup endpoint to verify user input to DB & create JWT on success
+###################################################################################################
+
 @app.route('/signup', methods=['POST'])
 def signup():
     
@@ -56,29 +69,30 @@ def signup():
     newuser = cursor.fetchone()
 
     if newuser is None:
-        cursor.execute("INSERT into users (username, password) VALUES (%s, %s);", (name, salted_password.decode('utf-8'),)) #insert new user with encrypted password to db
-        global_db_con.commit() #update db
+        cursor.execute("INSERT into users (username, password) VALUES (%s, %s);", (name, salted_password.decode('utf-8'),)) 
+        global_db_con.commit() #update db changes
         cursor.close() 
-
-        #jwt with an expiration time of 30 minutes 
-        #user_jwt = jwt.encode({"user": username, "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
         user_jwt = JWT(name, pwd)
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
         return jsonify({'validJWT': False, 'message': 'Username is already taken'})
    
+###################################################################################################
+                                    #End of signup endpoint
+###################################################################################################
 
+###################################################################################################
+                    #Login endpoint to verify user credentials with DB
+###################################################################################################
 
 @app.route('/login', methods=['POST'])
 def login():
-    #only validate JWT for user when they login since they will have valid one when they sign in?
-    #save username & password from frontend and user those to retrieve token
+    
     name = request.form['username']
     pwd = request.form['password']
 
 
-    #decode jwt and compare to username and password in db
     cursor = global_db_con.cursor()
     cursor.execute("SELECT * FROM users WHERE username = %s", (name,))
     record = cursor.fetchone()
@@ -89,8 +103,8 @@ def login():
     else:
         #compare salted password from database from user's password 
         salted_password = record[2]
-        print("Salted Password: " + salted_password)
         cursor.close()
+        
         #compare password from form with decoded password
         if (bcrypt.checkpw( bytes(pwd, 'utf-8'), salted_password.encode() )): 
             user_jwt = JWT(name, pwd)
@@ -98,16 +112,23 @@ def login():
         else:
             return jsonify({'validCreds': False, 'validToken': False, 'message': 'Incorrect password. Please try again'})
 
+###################################################################################################
+                                    #Method that creates JWT
+###################################################################################################
 
 @app.route('/createToken', methods=['GET'])
 def JWT(username, password):
     
     return jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, JWT_SECRET, algorithm="HS256")
-    
 
+###################################################################################################
+                                    #End of JWT method
+###################################################################################################
 
-#enpoint that will be a POST to receive jwt for validation
-#if valid, return json response from '/getBooks' endpoint
+###################################################################################################
+                                    #Verifies user JWT
+###################################################################################################  
+
 @app.route('/validToken', methods=['GET'])
 def validToken():
 
@@ -118,15 +139,13 @@ def validToken():
     else:
         return jsonify({'validToken': True})
 
+###################################################################################################
+                                    #Returns books from DB
+###################################################################################################
 
 @app.route('/populateBookList', methods=['GET'])
 def populateBookList():
     
-    #query search in database and return all books
-    #send to frontend without displaying them 
-    #until user provides valid login information
-    #and jwt token access
-
     cursor = global_db_con.cursor()
     cursor.execute("SELECT * FROM books")
     record = cursor.fetchall()
@@ -139,25 +158,23 @@ def populateBookList():
 
     return jsonify({'Books': result})
 
+###################################################################################################
+                                    #End of populateBookList 
+###################################################################################################
+
+
+###################################################################################################
+    #Method that verifies user JWT and updates DB if token is valid otherwise, returns False
+###################################################################################################
 
 @app.route('/getBooks', methods=['GET'])
 def getBooks():
-    #method that requires valid jwt
-    #compare decoded jwt with decoded password matching
-    #send json object with username, password, and jwt
-    #compare decoded with user's name
-    #then compare user's password and if it's the same as the decoded password using bcrypt 
-
-    #receive username & pasword
-    #get token from token endpoint
 
     token = request.args.get('jwt')
     cursor = global_db_con.cursor()
 
     isTokenValid = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
     username = isTokenValid['user']
-    print("username decoded" + username)
-
 
     if (isTokenValid):
         #query username and password in database and select book to purchase 
@@ -176,6 +193,9 @@ def getBooks():
     else:
         return jsonify({'Book_Purchased': False})
 
+###################################################################################################
+                                    #End of Assignment 3
+###################################################################################################
 
 app.run(host='0.0.0.0', port=80)
 
