@@ -1,5 +1,5 @@
 body {
-  background-color: #B0C4DE;
+  background-color: #202020;
 }
 
 #userInfo, #homepage,
@@ -8,6 +8,32 @@ body {
   display: none;
 }
 
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #84C9FB;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 18px;
+}
+
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+
+h1 {
+  color: #84C9FB;
+  margin-top: 10%;
+}
 
 .book-container {
   display: grid;
@@ -22,13 +48,23 @@ body {
   text-align: center;
 }
 
-
+/*
 #welcome, #homepage, #userInfo {
   text-align: center;
-  margin: 10% 10% 0 10%;
-  border-style: groove;
-  border-color: white;
+  margin: 20% 10% 0 10%;
+  background-color: #282828;
   border-width: 10px;
+}*/
+
+#welcome, #homepage, #userInfo {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #282828;
+  border: 5px solid #181818;
+  padding: 10px;
 }
 
 #booklist {
@@ -37,13 +73,13 @@ body {
 
 .button {
   border: none;
-  color: white;
+  color: #84C9FB;
   padding: 15px 30px;
   text-align: center;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px 15px;
-  background-color: #6495ED;
+  background-color: #202020;
 }
 
 .button:hover {
