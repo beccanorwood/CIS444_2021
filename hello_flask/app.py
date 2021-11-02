@@ -56,7 +56,7 @@ def checkCreds():
     user_state = request.form['state']
     username = request.form['username']
     password = request.form['password']
-
+    
     if user_state == 'newuser':
         return signup(username, password)
     else:
@@ -191,6 +191,27 @@ def getBooks():
         return jsonify({'Book_Purchased': True})
     else:
         return jsonify({'Book_Purchased': False})
+
+###################################################################################################
+                                    #End of getBooks endpoint
+###################################################################################################
+
+###################################################################################################
+                                    #Start of Contact endpoint
+###################################################################################################
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    
+    userFeedback= request.form['request']
+
+    return jsonify({'message': "Thank you, we will get back to soon!"});
+    
+
+###################################################################################################
+                                    #End of contact endpoint
+###################################################################################################
+
 
 ###################################################################################################
                                     #End of Assignment 3

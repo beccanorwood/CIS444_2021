@@ -4,7 +4,7 @@ body {
 
 #userInfo, #homepage,
 .book-container, .book, 
-#book_price, #availableBooks {
+#book_price, #buy {
   display: none;
 }
 
@@ -30,6 +30,10 @@ body {
   color: black;
 }
 
+.navbar-right {
+  float:right;
+}
+
 h1 {
   color: #84C9FB;
   margin-top: 10%;
@@ -39,12 +43,20 @@ h1 {
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 20px;
+  position: absolute;
+  margin-top: 5%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
 }
 
 .book {
+  background-color: #282828;
   text-align: center;
+  color: white;
   padding: 20px;
-  font-size: 25px;
+  font-size: 20px;
   text-align: center;
 }
 
