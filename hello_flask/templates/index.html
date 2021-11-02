@@ -112,11 +112,14 @@
 			});
 
 			$('.buy').on('click', function(){
-				var selectedBook = $('#booklist').find(":selected").text();
+				bookInfo = $(this).parent().text();
+				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
+
+				console.log(bookName);
 
 				$.get('/getBooks', {
 					'jwt': user_jwt,
-					'book': selectedBook
+					'book': bookInfo
 				},
 				function(data, status) {
 					
@@ -139,7 +142,7 @@
 		<a href = "/">Home</a>
 		<a href>Store</a>
 		<!--<a href = "/contact">Contact</a>-->
-		<div class = "navbar-right"><a href = '/buy'>Add to Cart</a></div>
+		<div class = "navbar-right"><a href = '/buy'>View Cart</a></div>
 	</div>
 	<div id = "welcome">
 		<h1>Welcome to Neitherstone Norwood Books!</h1>
@@ -159,31 +162,31 @@
 	</div>	
 	<div class = "book-container">
 		<div class = "book"><img src = "{{media}}/HP1.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>	
 		<div class = "book"><img src = "{{media}}/HP2.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HP3.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HP4.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HP5.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HP6.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HP7.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HPBundle.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		</div>
 		<div class = "book"><img src = "{{media}}/HPFilmVaultSeries.jpg" width = "200" height = "200">
-			<button class = "button buy">Buy</button>
+			<button class = "button buy">Add to Cart</button>
 		<div>
 	</div>
     </body>
