@@ -81,14 +81,11 @@
 				for (let i = 0; i <bookList.length; i++) {
 					name = bookList[i]['name'];
 					price = bookList[i]['price'];
-					/*book_selection.set('Book' + i, {book_name: name, book_price: price})*/ 
-					var img = 'HP' + (i+1).toString();
-					imgpath = "{{media}}"/img.jpg;
-					book_selection.set('Book' + i, {book_name: name, book_price: price, book_imgpath: imgpath})
-					$('.book').eq(i).text(book_selection.get('Book' + i).book_name + " ");
-					$('.book').eq(i).append('<img src = "{{media}}/' + img + '.jpg" height = "100px" width="100px">');  
-					$('.book').eq(i).append('\nPrice: ' + '$' +  book_selection.get('Book' + i).book_price);
-					$('#books').show();
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name + "<br><br> "
+								+ "Price: " + '$' + book_selection.get('Book' + i).book_price);
+					$('.book').show();
 					$('#signup').hide();
 				}
 
@@ -159,18 +156,18 @@
 		<h1 id = "home_greeting"></h1>
 		<button class = "button viewBooks">View Books</button>
 	</div>
-	
-	<div id="books">
-		<h1>Available Books</h1>
-		<div class = "book-container">
-			<div class = "book"></div>
-			<div class = "book"></div>
-			<div class = "book"></div>
-			<div class = "book"></div>
-			<div class = "book"></div>
-			<div class = "book"></div>
-			<div class = "book"></div>
-		</div>
+		
+	<!--<h1>Available Books</h1>-->
+	<div class = "book-container">
+		<div class = "book"><img src = "{{media}}/HP1.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP2.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP3.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP4.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP5.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP6.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HP7.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HPBundle.jpg" width = "200" height = "200"></div>
+		<div class = "book"><img src = "{{media}}/HPFilmVaultSeries.jpg" width = "200" height = "200"><div>
 	</div>
     </body>
 </html>

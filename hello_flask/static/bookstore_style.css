@@ -2,24 +2,28 @@ body {
   background-color: #B0C4DE;
 }
 
-#userInfo, #homepage, #books, #book_price {
+#userInfo, #homepage,
+.book-container, .book, 
+#book_price, #availableBooks {
   display: none;
 }
 
+
 .book-container {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: auto auto auto;
   grid-gap: 20px;
 }
 
 .book {
+  text-align: center;
   padding: 20px;
   font-size: 25px;
   text-align: center;
 }
 
 
-#welcome, #homepage, #userInfo, #books {
+#welcome, #homepage, #userInfo {
   text-align: center;
   margin: 10% 10% 0 10%;
   border-style: groove;
