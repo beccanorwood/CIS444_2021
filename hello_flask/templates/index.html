@@ -80,7 +80,7 @@
 					book_selection.set('Book' + i, {book_name: name, book_price: price})
 					book_selection.set('Book' + i, {book_name: name, book_price: price})
 					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name + "<br><br> "
-								+ "Price: " + '$' + book_selection.get('Book' + i).book_price);
+								+ "Price: " + '$' + book_selection.get('Book' + i).book_price + "<br><br>");
 					
 					$('.buy').eq(i).appendTo($('.book').eq(i));
 					$('.book').show();
