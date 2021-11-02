@@ -48,14 +48,6 @@ h1 {
   text-align: center;
 }
 
-/*
-#welcome, #homepage, #userInfo {
-  text-align: center;
-  margin: 20% 10% 0 10%;
-  background-color: #282828;
-  border-width: 10px;
-}*/
-
 #welcome, #homepage, #userInfo {
   position: absolute;
   text-align: center;
