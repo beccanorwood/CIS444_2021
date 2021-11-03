@@ -5,6 +5,7 @@ import json
 import datetime
 import bcrypt
 import re
+import simplejson as json
 
 
 from db_con import get_db_instance, get_db
@@ -188,11 +189,22 @@ def addtoCart():
                                 #End of addtoCart endpoint
 ###################################################################################################
 
-@app.route('/viewCart', methods = ['GET'])
-def viewCart():
+@app.route('/viewTotal', methods = ['GET'])
+def viewTotal():
+    
+    bookPrices = []
+    cursor = global_db_con.cursor()
 
-    return jsonify({'books':listofBooksAdded});
+    for book in listofBooksAdded:
+        print(book)
+        cursor.execute("SELECT * FROM books WHERE name = %s", (book,))
 
+        bookInfo = cursor.fetchone()
+        bookPrice = bookInfo[2]
+
+        bookPrices.append(bookPrice)
+
+    return jsonify({'total': sum(bookPrices)})
 
 ###################################################################################################
     #Method that verifies user JWT and updates DB if token is valid otherwise, returns False

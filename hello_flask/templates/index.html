@@ -9,7 +9,7 @@
 
 	    	var user_jwt; /* user token */	
 		var user_state;
-		var booklist = [];
+		var booklist =  new Map();
 		const book_selection = new Map();
 		const currState = {NEWUSER: "newuser", USER: "user" };
 		
@@ -92,17 +92,13 @@
 
 		};
 
-		function viewCart() {
-			$.getJSON('/viewCart', function(data) {
+		function viewTotal() {
+			$.getJSON('/viewTotal', function(data) {
 
-				booklist = data.books;
-				console.log(booklist);
-
-				
-				for (let i = 0; i < booklist.length; i++) {
-					console.log("JSON viewCart method " + booklist[i]);
-		   			$('.cart_div').append("<br><br> " + booklist[i] + " <br><br> ");
-				}
+				bookTotal = data.total;
+				alert(JSON.stringify(bookTotal));
+								
+				$('.cart_div').append("<br>" + '$' + bookTotal);
 				$('.cart_div').show();
 				$('.book-container').hide();		
 			});
@@ -158,7 +154,9 @@
 	<div class = "navbar">
 		<a href = "/">Home</a>
 		<!--<button class = "button contact" onclick = "contact();">Contact</a>-->
-		<div class = "navbar-right"><button class = "button viewcartbn" onclick = "viewCart();">View Cart</button></div>
+		<div class = "navbar-right">
+			<button class = "button viewTotal" onclick = "viewTotal();">View Total</button>
+		</div>
 	</div>
 	<div id = "welcome">
 		<h1>Welcome to Neitherstone Norwood Books!</h1>
@@ -205,7 +203,7 @@
 			<button class = "button buy">Add to Cart</button>
 		</div>
 	</div>
-	<div class = "cart_div">Your Cart</div>
+	<div class = "cart_div">Your Total</div>
 	<div class = "contact">
 		<section>
 			<h2>Compliments</h1>
