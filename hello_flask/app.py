@@ -4,6 +4,7 @@ import jwt
 import json
 import datetime
 import bcrypt
+import re
 
 
 from db_con import get_db_instance, get_db
@@ -169,20 +170,33 @@ def populateBookList():
 def addtoCart():
     
     bookAdded = request.form['book']  
+    token = request.form['jwt']
+    bookAdded = re.sub(r"[\n\t]", "", bookAdded.strip())
+
     print("Book Added: " + bookAdded)
 
-    listofBooksAdded.append(bookAdded)
-    print(listofBooksAdded)
-    
-    if listofBooksAdded:
-        return ({'message': True, 'books': listofBooksAdded})
+
+    if jwt.decode(token, JWT_SECRET, algorithms=["HS256"]):
+        listofBooksAdded.append(bookAdded)
+        print(listofBooksAdded)
+        return ({'validJWT': True})
     else:
-        return ({'message': False, 'books': 'No Books Added'});
+        return ({'validJWT': False});
 
 
 ###################################################################################################
                                 #End of addtoCart endpoint
 ###################################################################################################
+
+#@app.route('/viewCart', methods = ['GET'])
+#def viewCart():
+
+#    booksinCart = request.args.get('booklist')
+#    print(booksinCart)
+   
+
+#    return jsonify({booksinCart})
+
 
 
 ###################################################################################################

@@ -118,25 +118,22 @@
 				console.log(bookName);
 					
 				$.post('/addtoCart', {
-					book: bookName
+					book: bookName,
+					jwt: user_jwt
 				},
 				function(data, status) {
 					
-					var purchaseComplete = data.message;
-					if (purchaseComplete) {
-						booklist = data.book;
-						alert("Book Added");
-					}
-					else {
-						alert("No Book Added");
+					validPurchase = data.validJWT;
+					if (validPurchase) {
+						alert("Book Added to Cart");
 					}
 				});
 			});
 
 
 			$('#viewCart').on('click', function() {
-				$('.cart_div').show();
-			});
+				console.log(booklist);		
+			});		
 
 		});
 
