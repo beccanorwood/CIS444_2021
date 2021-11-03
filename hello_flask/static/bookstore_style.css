@@ -5,7 +5,8 @@ body {
 #userInfo, #homepage,
 .book-container, .book, 
 #book_price, #buy, #contact,
-.viewCart .badge, #cart_div {
+.viewCart .badge, #cart_div,
+.purchase {
   display: none;
 }
 
@@ -54,10 +55,11 @@ p {
  color: #ddd;
 }
 
-label {
+label, #cart_div {
   font-size: 25px;
   color: #ddd;
 }
+
 
 .book-container {
   display: grid;

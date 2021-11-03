@@ -85,7 +85,9 @@
 					console.log(book_Names[i]);
 					console.log(book_Prices[i]);
 					alert(book_Names[i] + book_Prices[i]);
-		   			$('#cart_div').append(book_Names[i] + " " + book_Prices[i] + "<br><br>")
+		   			$('#cart_div').append(book_Names[i] + "  $" + book_Prices[i] + "<br><br>");
+					$('.order').text("Place Order");
+					$('.badge').hide();
 		   			$('#cart_div').show();
 					$('.book-container').hide();
 					$('#userInfo').hide();
@@ -152,7 +154,7 @@
 		<div class = "nav-right"> 
 			<button class = "button contact" onclick= "contact();">Contact</button>
 			<button class = "button viewCart" onclick = "viewCart();">
-				<span>View Cart</span> 	
+				<span class = "order">View Cart</span> 	
 				<span class = "badge"></span>
 			</button>
 		</div>
@@ -202,7 +204,8 @@
 			<button class = "button buy">Add to Cart</button>
 		</div>
 	</div>
-	<div id = "cart_div"></div>
+	<div id = "cart_div">
+		<h2>Your Cart</h2></div>
 	<div id = "contact">
 		<section>
 			<h2>Compliments</h2>
