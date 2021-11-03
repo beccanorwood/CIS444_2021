@@ -49,6 +49,10 @@ p {
   font-size: 20px;
 }
 
+#userInfo label {
+  font-size: 18px;
+}
+
 .book-container {
   display: grid;
   grid-template-columns: auto auto auto;
