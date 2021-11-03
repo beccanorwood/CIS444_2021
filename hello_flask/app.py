@@ -172,6 +172,28 @@ def addtoCart():
 
 
 ###################################################################################################
+                                    #View Cart Endpoint
+###################################################################################################
+
+@app.route('/viewCart', methods = ['GET'])
+def viewCart():
+   
+    bookPrices = []
+
+    cursor = global_db_con.cursor()
+
+    for book in listofBooksAdded:
+        cursor.execute("SELECT * FROM books WHERE name = %s", (book,))
+        price = cursor.fetchone()[2]
+
+        bookPrices.append(price)
+
+    cursor.close()
+
+    return json.dumps({'bookNames': listofBooksAdded, 'bookPrices': bookPrices})
+
+
+###################################################################################################
                                 #End of addtoCart endpoint
 ###################################################################################################
 

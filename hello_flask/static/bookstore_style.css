@@ -5,7 +5,7 @@ body {
 #userInfo, #homepage,
 .book-container, .book, 
 #book_price, #buy, #contact,
-.viewTotal .badge {
+.viewCart .badge, #cart_div {
   display: none;
 }
 
@@ -34,7 +34,7 @@ body {
   float:right;
 }
 
-.viewTotal .badge {
+.viewCart .badge {
   position: absolute;
   top: 3px;
   right: 5px;
@@ -52,11 +52,6 @@ h1, h2 {
 p {
  font-size: 25px;
  color: #ddd;
-}
-
-.cart_div {
-  color: #84C9FB;
-  font-size: 20px;
 }
 
 label {
@@ -85,7 +80,7 @@ label {
   text-align: center;
 }
 
-#welcome, #homepage, #userInfo, #contact {
+#welcome, #homepage, #userInfo, #contact, #cart_div {
   position: absolute;
   text-align: center;
   left: 50%;
