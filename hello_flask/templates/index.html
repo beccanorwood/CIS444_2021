@@ -21,13 +21,10 @@
 
 			name = $('#username').val();
 			pwd = $('#password').val();
+			
+			if (!name || !pwd) { alert("Fields cannot be empty!");}
 
-			$.post('/userState',
-			{ 
-			  state: user_state,
-			  username: name,
-			  password: pwd
-			},
+			$.post('/userState', { state: user_state, username: name, password: pwd },
 			function(data, status){	
 
 			  	var isValidToken = data.validJWT;
@@ -36,7 +33,8 @@
 				if (isValidToken) {
 				  user_jwt = data.message;
 				  $('#userInfo').hide();
-				  getValidToken();
+				  
+				  populateBooks();
 				}
 				else{
 				  alert(JSON.stringify(data['message']));
@@ -45,43 +43,25 @@
 				
 		};
 		
-		function getValidToken() {
-			$.get('/validToken', {
-			
-				"jwt" : user_jwt
-			},
-			function(data, status) {
-		  	  
-				var tokenisValid = data.validToken;  
-		  	  	console.log("Token is Valid: " + tokenisValid);
-
-			  	if (tokenisValid) {
-					populateBooks();
-				}
-				else {
-					alert("Invalid Credentials, try again!");
-				}
-			
-		  	});
-		};
 
 		/*=================================================================================*/
 			/*Receives a JSON object containing all the books available to purchase*/
 		/*=================================================================================*/
 		
 		function populateBooks(){
-			$.getJSON("/populateBookList", function(data) {
-		 					
+			$.getJSON("/populateBookList", function(data) { 
+				
 				bookList = data.Books
-				console.log(bookList);
 
 				for (let i = 0; i <bookList.length; i++) {
 					name = bookList[i]['name'];
 					price = bookList[i]['price'];
 					book_selection.set('Book' + i, {book_name: name, book_price: price})
 					book_selection.set('Book' + i, {book_name: name, book_price: price})
-					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name + "<br><br> "
-								+ "Price: " + '$' + book_selection.get('Book' + i).book_price + "<br><br>");
+					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name
+								+ "<br><br> "+ "Price: " + '$' 
+								+ book_selection.get('Book' + i).book_price 
+								+ "<br><br>");
 					
 					$('.buy').eq(i).appendTo($('.book').eq(i));
 					$('.book').show();
@@ -96,11 +76,8 @@
 			$.getJSON('/viewTotal', function(data) {
 
 				bookTotal = data.total;
-				alert(JSON.stringify(bookTotal));
+				alert(JSON.stringify("Your total is: " + '$' + bookTotal));
 								
-				$('.cart_div').append("<br>" + '$' + bookTotal);
-				$('.cart_div').show();
-				$('.book-container').hide();		
 			});
 		};
 
@@ -135,13 +112,11 @@
 			$('.buy').on('click', function(){
 				bookInfo = $(this).parent().text();
 				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
-				console.log(bookName);
-					
+						
 				$.post('/addtoCart', {
 					book: bookName,
 					jwt: user_jwt
-				},
-				function(data, status) {
+				}, function(data, status) {
 					
 					validPurchase = data.validJWT;
 					if (validPurchase) {
@@ -206,7 +181,6 @@
 			<button class = "button buy">Add to Cart</button>
 		</div>
 	</div>
-	<div class = "cart_div">Your Total</div>
 	<div id = "contact">
 		<section>
 			<h2>Compliments</h2>

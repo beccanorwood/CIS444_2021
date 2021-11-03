@@ -4,8 +4,7 @@ body {
 
 #userInfo, #homepage,
 .book-container, .book, 
-#book_price, #buy,
-.cart_div, #contact{
+#book_price, #buy, #contact{
   display: none;
 }
 
@@ -49,8 +48,9 @@ p {
   font-size: 20px;
 }
 
-#userInfo label {
-  font-size: 18px;
+label {
+  font-size: 25px;
+  color: #ddd;
 }
 
 .book-container {
@@ -74,7 +74,7 @@ p {
   text-align: center;
 }
 
-#welcome, #homepage, #userInfo, .cart_div, #contact {
+#welcome, #homepage, #userInfo, #contact {
   position: absolute;
   text-align: center;
   left: 50%;
