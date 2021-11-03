@@ -10,6 +10,7 @@
 	    	var user_jwt; /* user token */	
 		var user_state;
 		var booklist =  new Map();
+		var bookAddedtoCart = 0;
 		const book_selection = new Map();
 		const currState = {NEWUSER: "newuser", USER: "user" };
 		
@@ -22,8 +23,11 @@
 			name = $('#username').val();
 			pwd = $('#password').val();
 			
-			if (!name || !pwd) { alert("Fields cannot be empty!");}
+			if (!name || !pwd) { 
+				alert("Fields cannot be empty!");
+			}
 
+			else {
 			$.post('/userState', { state: user_state, username: name, password: pwd },
 			function(data, status){	
 
@@ -32,15 +36,14 @@
 
 				if (isValidToken) {
 				  user_jwt = data.message;
-				  $('#userInfo').hide();
-				  
+				  $('#userInfo').hide();	  
 				  populateBooks();
 				}
 				else{
 				  alert(JSON.stringify(data['message']));
 				}
-			});	
-				
+			});
+		      }	
 		};
 		
 
@@ -110,6 +113,8 @@
 			});   
 
 			$('.buy').on('click', function(){
+			
+				bookAddedtoCart ++;
 				bookInfo = $(this).parent().text();
 				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
 						
@@ -121,6 +126,8 @@
 					validPurchase = data.validJWT;
 					if (validPurchase) {
 						alert("Book Added to Cart");
+						$('.badge').text(bookAddedtoCart);
+						$('.badge').show();
 					}
 			 	});
 			});
@@ -133,7 +140,10 @@
 		<a href = "/">Home</a>
 		<div class = "nav-right"> 
 			<button class = "button contact" onclick= "contact();">Contact</button>
-			<button class = "button viewTotal" onclick = "viewTotal();">View Total</button>
+			<button class = "button viewTotal" onclick = "viewTotal();">
+				<span>View Total</span>
+				<span class = "badge"></span>
+			</button>
 		</div>
 	</div>
 	<div id = "welcome">
