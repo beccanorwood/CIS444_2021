@@ -85,7 +85,7 @@ def signup(name, pwd):
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
-        return jsonify({'validJWT': False, 'message': 'Signup Error'})
+        return jsonify({'validJWT': False, 'message': 'Username is already taken'})
    
 ###################################################################################################
                                     #End of signup endpoint
@@ -115,7 +115,7 @@ def login(name, pwd):
             user_jwt = JWT(name, pwd)
             return jsonify({'validJWT': True, 'message': user_jwt})
         else:
-            return jsonify({'validJWT': False, 'message': 'Login Error'})
+            return jsonify({'validJWT': False, 'message': 'Incorrect username or password'})
 
 ###################################################################################################
                                     #Method that creates JWT

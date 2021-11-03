@@ -58,7 +58,7 @@ label {
   grid-template-columns: auto auto auto;
   grid-gap: 20px;
   position: absolute;
-  margin-top: 5%;
+  margin: 150px 10px 150px 10px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
