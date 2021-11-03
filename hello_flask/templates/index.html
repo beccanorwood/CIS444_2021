@@ -91,6 +91,23 @@
 			});
 
 		};
+
+		function viewCart() {
+			$.getJSON('/viewCart', function(data) {
+				booklist = data.message
+				console.log("View Cart Method: " + booklist);
+
+				if (booklist) {
+					for (let i = 0; i < boolist.length; i++) {
+						console.log("JSON viewCart method " + booklist[i]);
+						$('.cart_div').append(booklist[i] + "<br><br>");
+					}
+				}
+				else {
+					alert(JSON.stringify(data.message));
+				}
+			});
+		};
  		
 
 		/*=================================================================================*/ 
@@ -107,10 +124,10 @@
 
 
 			$('.loginbtn').on('click', function(){
-				user_state = currState.USER;
+				user_state = currState.USER; 
 				$('#welcome').hide();
 				$('#userInfo').show();
-			});
+			});   
 
 			$('.buy').on('click', function(){
 				bookInfo = $(this).parent().text();
@@ -127,16 +144,16 @@
 					if (validPurchase) {
 						alert("Book Added to Cart");
 					}
-				});
+			 	});
+			});
+	
+			
+			$('.viewcartbtn').on('click'< function(){
+				viewCart();
+				$('.cart_div').show(); 
 			});
 
-
-			$('#viewCart').on('click', function() {
-				console.log(booklist);		
-			});		
-
 		});
-
 		
 
 	</script>
@@ -144,7 +161,7 @@
 		<a href = "/">Home</a>
 		<a href>Store</a>
 		<!--<a href = "/contact">Contact</a>-->
-		<div class = "navbar-right"><a href = '/buy' id = "viewCart">View Cart</a></div>
+		<div class = "navbar-right"><button class = "button viewcartbn" onclick = "viewCart();" >View Cart</button></div>
 	</div>
 	<div id = "welcome">
 		<h1>Welcome to Neitherstone Norwood Books!</h1>

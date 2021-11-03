@@ -5,7 +5,7 @@ body {
 #userInfo, #homepage,
 .book-container, .book, 
 #book_price, #buy,
-.view_cart {
+.cart_div {
   display: none;
 }
 
@@ -61,7 +61,7 @@ h1 {
   text-align: center;
 }
 
-#welcome, #homepage, #userInfo, .view_cart {
+#welcome, #homepage, #userInfo, .view_cart, .cart_div {
   position: absolute;
   text-align: center;
   left: 50%;

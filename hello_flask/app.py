@@ -188,15 +188,10 @@ def addtoCart():
                                 #End of addtoCart endpoint
 ###################################################################################################
 
-#@app.route('/viewCart', methods = ['GET'])
-#def viewCart():
+@app.route('/viewCart', methods = ['GET'])
+def viewCart():
 
-#    booksinCart = request.args.get('booklist')
-#    print(booksinCart)
-   
-
-#    return jsonify({booksinCart})
-
+    return jsonify({'books': listofBooksAdded});
 
 
 ###################################################################################################
