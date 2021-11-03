@@ -94,19 +94,23 @@
 
 		function viewCart() {
 			$.getJSON('/viewCart', function(data) {
-				booklist = data.message
-				console.log("View Cart Method: " + booklist);
 
-				if (booklist) {
-					for (let i = 0; i < boolist.length; i++) {
-						console.log("JSON viewCart method " + booklist[i]);
-						$('.cart_div').append(booklist[i] + "<br><br>");
-					}
+				booklist = data.books;
+				console.log(booklist);
+
+				
+				for (let i = 0; i < booklist.length; i++) {
+					console.log("JSON viewCart method " + booklist[i]);
+		   			$('.cart_div').append("<br><br> " + booklist[i] + " <br><br> ");
 				}
-				else {
-					alert(JSON.stringify(data.message));
-				}
+				$('.cart_div').show();
+				$('.book-container').hide();		
 			});
+		};
+
+		function contact() {
+			$('.contact').show();
+			$('.book-container').hide();
 		};
  		
 
@@ -146,12 +150,6 @@
 					}
 			 	});
 			});
-	
-			
-			$('.viewcartbtn').on('click'< function(){
-				viewCart();
-				$('.cart_div').show(); 
-			});
 
 		});
 		
@@ -159,9 +157,8 @@
 	</script>
 	<div class = "navbar">
 		<a href = "/">Home</a>
-		<a href>Store</a>
-		<!--<a href = "/contact">Contact</a>-->
-		<div class = "navbar-right"><button class = "button viewcartbn" onclick = "viewCart();" >View Cart</button></div>
+		<!--<button class = "button contact" onclick = "contact();">Contact</a>-->
+		<div class = "navbar-right"><button class = "button viewcartbn" onclick = "viewCart();">View Cart</button></div>
 	</div>
 	<div id = "welcome">
 		<h1>Welcome to Neitherstone Norwood Books!</h1>
@@ -206,8 +203,20 @@
 		</div>
 		<div class = "book"><img src = "{{media}}/HPFilmVaultSeries.jpg" width = "200" height = "200">
 			<button class = "button buy">Add to Cart</button>
-		<div>
+		</div>
 	</div>
-	<div class = "cart_div"><p>Books in Cart Displayed Here</p></div>
+	<div class = "cart_div">Your Cart</div>
+	<div class = "contact">
+		<section>
+			<h2>Compliments</h1>
+			<p>Feel free to leave any thanks, money, or reviews about this amazing application built
+			by, yours truly, Rebecca Norwood! :)
+			</p>
+			<h1>Concerns</h2>
+			<p>If you have any negative opinions, thoughts, concerns about this application, please 
+			send those to my professor, Cary Jardin. Email Addres: cjardin@jardinlabs.com
+			</p>
+		</section>
+	</div>
     </body>
 </html>

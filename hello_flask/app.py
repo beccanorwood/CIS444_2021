@@ -191,7 +191,7 @@ def addtoCart():
 @app.route('/viewCart', methods = ['GET'])
 def viewCart():
 
-    return jsonify({'books': listofBooksAdded});
+    return jsonify({'books':listofBooksAdded});
 
 
 ###################################################################################################
