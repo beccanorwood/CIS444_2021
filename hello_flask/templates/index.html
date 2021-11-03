@@ -9,6 +9,7 @@
 
 	    	var user_jwt; /* user token */	
 		var user_state;
+		var booklist = [];
 		const book_selection = new Map();
 		const currState = {NEWUSER: "newuser", USER: "user" };
 		
@@ -114,23 +115,27 @@
 			$('.buy').on('click', function(){
 				bookInfo = $(this).parent().text();
 				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
-
 				console.log(bookName);
-
-				$.get('/getBooks', {
-					'jwt': user_jwt,
-					'book': bookInfo
+					
+				$.post('/addtoCart', {
+					book: bookName
 				},
 				function(data, status) {
 					
-					var purchaseComplete = data.Book_Purchased;
+					var purchaseComplete = data.message;
 					if (purchaseComplete) {
-						alert("Book Purchased");
+						booklist = data.book;
+						alert("Book Added");
 					}
 					else {
-						alert("Purchase Unsuccessful");
+						alert("No Book Added");
 					}
 				});
+			});
+
+
+			$('#viewCart').on('click', function() {
+				$('.cart_div').show();
 			});
 
 		});
@@ -142,7 +147,7 @@
 		<a href = "/">Home</a>
 		<a href>Store</a>
 		<!--<a href = "/contact">Contact</a>-->
-		<div class = "navbar-right"><a href = '/buy'>View Cart</a></div>
+		<div class = "navbar-right"><a href = '/buy' id = "viewCart">View Cart</a></div>
 	</div>
 	<div id = "welcome">
 		<h1>Welcome to Neitherstone Norwood Books!</h1>
@@ -189,5 +194,6 @@
 			<button class = "button buy">Add to Cart</button>
 		<div>
 	</div>
+	<div class = "cart_div"><p>Books in Cart Displayed Here</p></div>
     </body>
 </html>

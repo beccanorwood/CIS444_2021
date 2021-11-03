@@ -27,8 +27,9 @@ BOOKSTORE_MEDIA = "DEV_A3" #A3 media files
 
 JWT_SECRET = "Jesus saves, everyone else takes 2D12 damage"
 
-global_db_con = get_db() #global database connection
 
+global_db_con = get_db() #global database connection
+listofBooksAdded = []
 
 with open("secret", "r") as f:
     JWT_SECRET = f.read()
@@ -162,12 +163,33 @@ def populateBookList():
                                     #End of populateBookList 
 ###################################################################################################
 
+###################################################################################################
+
+@app.route('/addtoCart', methods=['POST'])
+def addtoCart():
+    
+    bookAdded = request.form['book']  
+    print("Book Added: " + bookAdded)
+
+    listofBooksAdded.append(bookAdded)
+    print(listofBooksAdded)
+    
+    if listofBooksAdded:
+        return ({'message': True, 'books': listofBooksAdded})
+    else:
+        return ({'message': False, 'books': 'No Books Added'});
+
+
+###################################################################################################
+                                #End of addtoCart endpoint
+###################################################################################################
+
 
 ###################################################################################################
     #Method that verifies user JWT and updates DB if token is valid otherwise, returns False
 ###################################################################################################
 
-@app.route('/getBooks', methods=['GET'])
+@app.route('/purchaseBooks', methods=['GET'])
 def getBooks():
 
     token = request.args.get('jwt')
