@@ -1,3 +1,8 @@
+@media screen and (max-height: 450px) {
+  .sidenav {padding:top 15px;}
+  .sidenav a, .sidenav button {font-size: 18px;}
+}
+
 body {
   background-color: #202020;
 }
@@ -5,8 +10,10 @@ body {
 #userInfo, #homepage,
 .book-container, .book, 
 #book_price, #buy,
-.cart_div , .contact{
+.cart_div, #contact{
   display: none;
+  margin-left: 160px;
+  padding: 0px 10px;
 }
 
 .navbar {
@@ -17,7 +24,7 @@ body {
   width: 100%;
 }
 
-.navbar a { 
+.navbar a, .navbar button { 
   float: left;
   display: block;
   color: #84C9FB;
@@ -31,9 +38,23 @@ body {
   color: black;
 }
 
-.navbar-right, .navbar button {
+.navbar-right {
   float:right;
 }
+
+/*
+.sidenav a, .sidenav button {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidnav a:hover, .sidenav button:hover {
+  color: #f1f1f1;
+}
+*/
 
 h1 {
   color: #84C9FB;
@@ -66,7 +87,7 @@ h1 {
   text-align: center;
 }
 
-#welcome, #homepage, #userInfo, .view_cart, .cart_div, .contact {
+#welcome, #homepage, #userInfo, .view_cart, .cart_div, #contact {
   position: absolute;
   text-align: center;
   left: 50%;
