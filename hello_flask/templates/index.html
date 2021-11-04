@@ -141,6 +141,26 @@
 				});
 			});
 
+		   	$('#comp').mouseenter(function () {
+				$('#becca_img').show();
+				$('section img').show();
+		   	});
+
+		   	$('#comp').mouseleave(function () {
+				$('#becca_img').hide();
+		   		$('section img').hide();
+			});
+
+		   	$('#concern').mouseenter(function () {
+				$('#jardin_img').show();
+				$('section img').show();
+		   	});
+
+		   	$('#concern').mouseleave(function () {
+				$('#jardin_img').hide();
+				$('section img').hide();
+		   	});
+
 			$('.buy').on('click', function() {
 
 				bookAddedtoCart ++;
@@ -226,14 +246,18 @@
 	</div>
 	<div id = "contact">
 		<section>
-			<h2>Compliments</h2>
+			<h2 id = "comp">Compliments</h2>
 			<p>If you have any thanks, compliments, words of praise about this amazing application, 
 			please send them to <br><br> Rebecca Norwood! :) <br> Email Address: norwo009@cougars.csusm.edu</p>
+			<div id = "becca_img">
 				<img src = "/static/Rebecca.jpg" width = "300" height = "300">
-			<h2>Concerns</h2>
+			</div>
+			<h2 id = "concern">Concerns</h2>
 			<p>If you have any negative opinions, thoughts, concerns about this application, please 
 			send those to my professor,  <br><br> Cary Jardin. <br> Email Address: cjardin@jardinlabs.com</p>
+			<div id = "jardin_img">	
 				<img src = "/static/Jardin.jpg" width = "300" height = "300">
+			</div>
 		</section>
 	</div>
     </body>
