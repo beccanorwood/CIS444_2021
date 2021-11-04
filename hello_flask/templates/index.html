@@ -85,12 +85,15 @@
 					console.log(book_Names[i]);
 					console.log(book_Prices[i]);
 		   			$('#cart_div').append(book_Names[i] + "  $" + book_Prices[i] + "<br><br>");
-					$('.badge').hide();
-		   			$('#cart_div').show();
-					$('.book-container').hide();
-					$('#userInfo').hide();
-					$('#homepage').hide();
-				}
+				}	
+
+				$('.placeorder').appendTo($('#cart_div'));
+				$('.badge').hide();
+		   		$('#cart_div').show();
+				$('.book-container').hide();
+				$('#userInfo').hide();
+				$('#homepage').hide();
+				
 								
 			});
 		};
@@ -208,6 +211,7 @@
 	</div>
 	<div id = "cart_div">
 		<h2>Your Cart</h2>
+		<button class = "button placeorder">Place Order</button>
 	</div>
 	<div id = "contact">
 		<section>
