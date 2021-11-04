@@ -6,7 +6,8 @@ body {
 .book-container, .book, 
 #book_price, #buy, #contact,
 .viewCart .badge, #cart_div, 
-#placeorder_div, .placeorder {
+#placeorder_div, .placeorder,
+section img{
   display: none;
 }
 
