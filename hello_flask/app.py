@@ -31,6 +31,7 @@ JWT_SECRET = "Jesus saves, everyone else takes 2D12 damage"
 
 
 global_db_con = get_db() #global database connection
+loggedin = False
 listofBooksAdded = []
 
 with open("secret", "r") as f:
@@ -84,6 +85,7 @@ def signup(name, pwd):
         global_db_con.commit() #update db changes
         cursor.close() 
         user_jwt = JWT(name, pwd)
+        loggedin = True
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
@@ -115,6 +117,7 @@ def login(name, pwd):
         #compare password from form with decoded password
         if (bcrypt.checkpw( bytes(pwd, 'utf-8'), salted_password.encode() )): 
             user_jwt = JWT(name, pwd)
+            loggedin = True
             return jsonify({'validJWT': True, 'message': user_jwt})
         else:
             return jsonify({'validJWT': False, 'message': 'Incorrect username or password'})
@@ -131,6 +134,16 @@ def JWT(username, password):
 ###################################################################################################
                                     #End of JWT method
 ###################################################################################################
+
+###################################################################################################
+                                #Return if user is logged in or not
+###################################################################################################
+
+@app.route('/isLoggedIn', methods = ['GET'])
+def isLoggedIn():
+    
+    return jsonify({'loggedin': loggedin})
+
 
 ###################################################################################################
                                     #Returns books from DB
@@ -251,6 +264,7 @@ def getBooks():
 ###################################################################################################
                                     #End of getBooks endpoint
 ###################################################################################################
+
 
 ###################################################################################################
                                     #Start of Contact endpoint

@@ -8,7 +8,7 @@ body {
 .viewCart .badge, #cart_div, 
 #placeorder_div, .placeorder,
 #becca_img, #jardin_img,
-section img {
+section img, #logout {
   display: none;
 }
 
