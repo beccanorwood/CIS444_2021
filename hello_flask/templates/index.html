@@ -84,9 +84,7 @@
 				for (let i = 0; i < book_Names.length; i++){
 					console.log(book_Names[i]);
 					console.log(book_Prices[i]);
-					alert(book_Names[i] + book_Prices[i]);
 		   			$('#cart_div').append(book_Names[i] + "  $" + book_Prices[i] + "<br><br>");
-					$('.order').text("Place Order");
 					$('.badge').hide();
 		   			$('#cart_div').show();
 					$('.book-container').hide();
@@ -125,8 +123,12 @@
 				$('#userInfo').show();
 			});   
 
-			$('.buy').on('click', function(){
-			
+			$('.buy').on('click', function() {
+
+				function random(max) {
+					return Math.random() * (max - 0) + 0;
+				}
+
 				bookAddedtoCart ++;
 				bookInfo = $(this).parent().text();
 				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
@@ -205,7 +207,8 @@
 		</div>
 	</div>
 	<div id = "cart_div">
-		<h2>Your Cart</h2></div>
+		<h2>Your Cart</h2>
+	</div>
 	<div id = "contact">
 		<section>
 			<h2>Compliments</h2>

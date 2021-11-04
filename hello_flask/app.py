@@ -60,6 +60,8 @@ def checkCreds():
     username = request.form['username']
     password = request.form['password']
     
+    listofBooksAdded.clear()
+
     if user_state == 'newuser':
         return signup(username, password)
     else:
