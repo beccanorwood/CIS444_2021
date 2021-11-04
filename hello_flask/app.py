@@ -224,8 +224,7 @@ def viewTotal():
 def getBooks():
 
     token = request.args.get('jwt')
-    selectedBook = request.args.get('book')
-
+    
     cursor = global_db_con.cursor()
 
     isTokenValid = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
@@ -237,9 +236,13 @@ def getBooks():
 
         userInfo = cursor.fetchone()
         userid = userInfo[0]
-
-        cursor.execute("INSERT into purchased_books (user_id, book_id, purchase_time) VALUES (%s, %s, %s);", (userid, selectedBook, datetime.datetime.now(),))
-        global_db_con.commit()
+    
+        for book in listofBooksAdded:
+            cursor.execute("SELECT * FROM books WHERE name = %s", (book,))
+            bookID = cursor.fetchone()[0]
+            cursor.execute("INSERT into purchased_books (user_id, book_id, purchase_time) VALUES (%s, %s, %s);", (userid, bookID, datetime.datetime.now(),))
+            global_db_con.commit()
+        
         cursor.close()
         return jsonify({'Book_Purchased': True})
     else:

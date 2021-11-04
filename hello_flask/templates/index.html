@@ -124,13 +124,24 @@
 				user_state = currState.USER; 
 				$('#welcome').hide();
 				$('#userInfo').show();
-			});   
+			});
+
+			$('.placeorder').on('click', function() {
+				$.get('/purchaseBooks', {
+					jwt: user_jwt		
+				}, function(data, status) {
+					response = data.Book_Purchased;
+
+					if(response){
+						alert("Book Purchase Complete!");
+					}
+					else {
+						alert("Error, JWT required to buy a book");
+					}
+				});
+			});
 
 			$('.buy').on('click', function() {
-
-				function random(max) {
-					return Math.random() * (max - 0) + 0;
-				}
 
 				bookAddedtoCart ++;
 				bookInfo = $(this).parent().text();
