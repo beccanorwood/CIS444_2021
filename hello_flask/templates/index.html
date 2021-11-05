@@ -47,6 +47,35 @@
 		      }	
 		};
 
+
+		function displayMyBooks(){
+			$.get('/myBooks', {
+				jwt: user_jwt
+			}, function(data, status) {
+				alert(JSON.stringify(data.booksPurchased));		
+				purchasedBooks = data.booksPurchased;
+				
+				for (let i = 0; i < purchasedBooks.length; i++) {
+					name = purchasedBooks[i]['name'];
+					purchaseTime = purchasedBooks[i]['purchase_time'];
+
+					$('#my_books').append("<br><br> " + "Book:\t" + name 
+							      + "<br><br>" + "Purchased:\t"     
+							      + purchaseTime + "<br><br>");
+				}
+
+				$('#my_books').show();
+				$('.myBooks').show();
+				$('#userInfo').hide();
+				$('.book-container').hide();
+				$('#welcome').hide();
+				$('#cart_div').hide();
+				$('#contact').hide();
+
+			});
+
+		};
+
 		/*=================================================================================*/
 			/*Receives a JSON object containing all the books available to purchase*/
 		/*=================================================================================*/
@@ -190,7 +219,8 @@
 	<div class = "navbar">
 		<a id = "logout" href = "/" onclick = "logOut;">Log Out</a>
 		<div class = "nav-right"> 
-			<button class = "button contact" onclick= "contact();">Contact</button>
+			<button class = "button myBooks" onclick = "displayMyBooks();">My Books</button>
+			<button class = "button contact" onclick = "contact();">Contact</button>
 			<button class = "button viewCart" onclick = "viewCart();">
 				<span class = "order">View Cart</span> 	
 				<span class = "badge"></span>
@@ -245,6 +275,9 @@
 	<div id = "cart_div">
 		<h2>Your Cart</h2>
 		<button class = "button placeorder">Place Order</button>
+	</div>
+	<div id = "my_books">
+		<h2 class = "myBooks">My Books</h2>
 	</div>
 	<div id = "contact">
 		<section>

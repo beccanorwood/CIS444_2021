@@ -8,9 +8,12 @@ body {
 .viewCart .badge, #cart_div, 
 #placeorder_div, .placeorder,
 #becca_img, #jardin_img,
-section img, #logout {
+section img, #logout,
+#my_books {
   display: none;
 }
+
+#logout { text-decoration: none;}
 
 .navbar {
   overflow: hidden;
@@ -52,7 +55,7 @@ h1, h2 {
   margin-top: 10%;
 }
 
-p {
+p, #my_books {
  font-size: 25px;
  color: #ddd;
 }
@@ -84,7 +87,9 @@ label, #cart_div {
   text-align: center;
 }
 
-#welcome, #homepage, #userInfo, #contact, #cart_div {
+#welcome, #homepage, 
+#userInfo, #contact, 
+#cart_div, #my_books {
   position: absolute;
   text-align: center;
   left: 50%;

@@ -31,7 +31,6 @@ JWT_SECRET = "Jesus saves, everyone else takes 2D12 damage"
 
 
 global_db_con = get_db() #global database connection
-loggedin = False
 listofBooksAdded = []
 
 with open("secret", "r") as f:
@@ -85,7 +84,6 @@ def signup(name, pwd):
         global_db_con.commit() #update db changes
         cursor.close() 
         user_jwt = JWT(name, pwd)
-        loggedin = True
         return jsonify({'validJWT': True, 'message': user_jwt})
     else:
         cursor.close()
@@ -117,10 +115,44 @@ def login(name, pwd):
         #compare password from form with decoded password
         if (bcrypt.checkpw( bytes(pwd, 'utf-8'), salted_password.encode() )): 
             user_jwt = JWT(name, pwd)
-            loggedin = True
             return jsonify({'validJWT': True, 'message': user_jwt})
         else:
             return jsonify({'validJWT': False, 'message': 'Incorrect username or password'})
+
+
+###################################################################################################
+                            #Gets books that user has purchased 
+###################################################################################################
+@app.route('/myBooks', methods = ['GET'])
+def myBooks():
+        
+    token = request.args.get('jwt')
+
+    cursor = global_db_con.cursor()
+
+    validToken = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    username = validToken['user']
+
+    if validToken:
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        userInfo = cursor.fetchone()
+        userID = userInfo[0]
+
+        cursor.execute("SELECT books.name, purchased_books.purchase_time " +
+                       "FROM users, books, purchased_books " +   
+                       "WHERE users.user_id = purchased_books.user_id AND " +
+                       "books.book_id = purchased_books.book_id " +
+                       "AND users.username = %s;", (username,));
+        
+        purchased_books = cursor.fetchall()
+        columns = cursor.description
+        booklist = [{columns[index][0]:column for index, column in enumerate(value)} for value in purchased_books]
+        print(purchased_books)
+
+        cursor.close()
+
+    return jsonify({"booksPurchased": booklist})
+    
 
 ###################################################################################################
                                     #Method that creates JWT
@@ -134,16 +166,6 @@ def JWT(username, password):
 ###################################################################################################
                                     #End of JWT method
 ###################################################################################################
-
-###################################################################################################
-                                #Return if user is logged in or not
-###################################################################################################
-
-@app.route('/isLoggedIn', methods = ['GET'])
-def isLoggedIn():
-    
-    return jsonify({'loggedin': loggedin})
-
 
 ###################################################################################################
                                     #Returns books from DB
