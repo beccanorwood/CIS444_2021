@@ -23,7 +23,6 @@ IMGS_URL = {
 
 CUR_ENV = "PRD"
 MY_MEDIA = "DEV2" #media files for assignment #2
-JWT_SECRET = "who cares?"
 
 global_db_con = get_db() #global database connection
 
