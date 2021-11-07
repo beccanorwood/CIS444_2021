@@ -1,0 +1,63 @@
+body {
+  background-image: url("media/wallpaper.jpg");
+}
+
+#container > div{
+  display: none;  
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+img {
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 10px 10px 5px #ccc;
+}
+
+h1, #pic_header {
+  display: none;
+  color: white;
+  font-size: 5em;
+  text-align: center;
+}
+
+
+#video_container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+}
+
+#video_header, button, #prompt {
+  display: none;
+}
+
+button, video {
+  display: none;
+}
+
+#button_container {
+  display: flex;
+  justify-content: center;
+}
+
+button:first-child {
+  margin-right: 20px;
+}
+
+button {
+  width: 100px;
+  height: 50px;
+}
+
+
+#slider > video {
+  display: none;
+  transition all 1s;
+}
+

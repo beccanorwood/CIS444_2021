@@ -1,0 +1,121 @@
+body {
+  background-color: #181818;
+}
+
+#userInfo, #homepage,
+.book-container, .book, 
+#book_price, #buy, #contact,
+.viewCart .badge, #cart_div, 
+#placeorder_div, .placeorder,
+#becca_img, #jardin_img,
+section img, #logout,
+#my_books {
+  display: none;
+}
+
+#logout { text-decoration: none;}
+
+.navbar {
+  overflow: hidden;
+  background-color: #202020;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a { 
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 15px 30px;
+  font-size: 18px;
+}
+
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+
+.nav-right {
+  float:right;
+}
+
+.viewCart .badge {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+
+h1, h2 {
+  color: #84C9FB;
+  margin-top: 10%;
+}
+
+p, #my_books {
+ font-size: 25px;
+ color: #ddd;
+}
+
+label, #cart_div {
+  font-size: 25px;
+  color: #ddd;
+}
+
+.book-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  position: absolute;
+  margin: 150px 10px 150px 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  z-index: -1;
+}
+
+.book {
+  background-color: #282828;
+  text-align: center;
+  color: white;
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
+#welcome, #homepage, 
+#userInfo, #contact, 
+#cart_div, #my_books {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #282828;
+  border: 5px solid #181818;
+  padding: 10px;
+}
+
+#booklist {
+  margin-bottom: 10%;
+}
+
+.button, a {
+  border: none;
+  color: #84C9FB;
+  padding: 15px 30px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px 15px;
+  background-color: #202020;
+}
+
+.button:hover, a:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+

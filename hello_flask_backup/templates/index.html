@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	     <link rel = "stylesheet" href = "/static/bookstore_style.css"/>
+    </head>
+    <body>
+	 <script>
+
+	    	var user_jwt; /* user token */	
+		var user_state;
+		var booklist =  new Map();
+		var bookAddedtoCart = 0;
+		const book_selection = new Map();
+		const currState = {NEWUSER: "newuser", USER: "user" };
+		
+		/*=================================================================================*/
+					/*Methods that are strictly for server call*/
+		/*=================================================================================*/
+
+		function checkCreds(){
+
+			name = $('#username').val();
+			pwd = $('#password').val();
+			
+			if (!name || !pwd) { 
+				alert("Fields cannot be empty!");
+			}
+
+			else {
+			$.post('/userState', { state: user_state, username: name, password: pwd },
+			function(data, status){	
+
+			  	var isValidToken = data.validJWT;
+				console.log("IsValidToken: " + isValidToken);
+
+				if (isValidToken) {
+				  user_jwt = data.message;
+				  $('#userInfo').hide();
+				  $('#logout').show();
+				  populateBooks();
+				}
+				else{
+				  alert(JSON.stringify(data['message']));
+				}
+			});
+		      }	
+		};
+
+
+		function displayMyBooks(){
+			$.get('/myBooks', {
+				jwt: user_jwt
+			}, function(data, status) {
+				alert(JSON.stringify(data.booksPurchased));		
+				purchasedBooks = data.booksPurchased;
+				
+				for (let i = 0; i < purchasedBooks.length; i++) {
+					name = purchasedBooks[i]['name'];
+					purchaseTime = purchasedBooks[i]['purchase_time'];
+
+					$('#my_books').append("<br><br> " + "Book:\t" + name 
+							      + "<br><br>" + "Purchased:\t"     
+							      + purchaseTime + "<br><br>");
+				}
+
+				$('#my_books').show();
+				$('.myBooks').show();
+				$('#userInfo').hide();
+				$('.book-container').hide();
+				$('#welcome').hide();
+				$('#cart_div').hide();
+				$('#contact').hide();
+
+			});
+
+		};
+
+		/*=================================================================================*/
+			/*Receives a JSON object containing all the books available to purchase*/
+		/*=================================================================================*/
+		
+		function populateBooks(){
+			$.getJSON("/populateBookList", function(data) { 
+				
+				bookList = data.Books
+
+				for (let i = 0; i <bookList.length; i++) {
+					name = bookList[i]['name'];
+					price = bookList[i]['price'];
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name
+								+ "<br><br> "+ "Price: " + '$' 
+								+ book_selection.get('Book' + i).book_price 
+								+ "<br><br>");
+					
+					$('.buy').eq(i).appendTo($('.book').eq(i));
+					$('.book').show();
+					$('#signup').hide();
+				}
+
+			});
+
+		};
+
+		function viewCart() {
+			$.getJSON('/viewCart', function(data) {
+
+				book_Names = data.bookNames
+				book_Prices = data.bookPrices
+				
+				for (let i = 0; i < book_Names.length; i++){
+					console.log(book_Names[i]);
+					console.log(book_Prices[i]);
+		   			$('#cart_div').append(book_Names[i] + "  $" + book_Prices[i] + "<br><br>");
+				}	
+
+				$('.placeorder').appendTo($('#cart_div'));
+				$('.badge').hide();
+		   		$('#cart_div').show();
+				$('.book-container').hide();
+				$('#userInfo').hide();
+				$('#homepage').hide();
+				
+								
+			});
+		};
+
+		function contact() {
+			$('#contact').show();
+			$('.book-container').hide();
+			$('#welcome').hide();
+			$('#userInfo').hide();
+			$('#homepage').hide();
+		};
+
+		function logOut() { $('#logout').hide(); };
+ 		
+
+		/*=================================================================================*/ 
+				/*Methods that are stricly used to manipulating DOM objects*/
+		/*=================================================================================*/ 
+
+		$(document).ready(function () {
+
+			$('.signupbtn').on('click', function(){
+				user_state = currState.NEWUSER;
+				$('#userInfo').show();
+				$('#welcome').hide();
+			});
+
+
+			$('.loginbtn').on('click', function(){
+				user_state = currState.USER; 
+				$('#welcome').hide();
+				$('#userInfo').show();
+			});
+
+			$('.placeorder').on('click', function() {
+				$.get('/purchaseBooks', {
+					jwt: user_jwt		
+				}, function(data, status) {
+					response = data.Book_Purchased;
+
+					if(response){
+						alert("Book Purchase Complete!");
+					}
+					else {
+						alert("Error, JWT required to buy a book");
+					}
+				});
+			});
+
+		   	$('#comp').mouseenter(function () {
+				$('#becca_img').show();
+				$('section img').show();
+		   	});
+
+		   	$('#comp').mouseleave(function () {
+				$('#becca_img').hide();
+		   		$('section img').hide();
+			});
+
+		   	$('#concern').mouseenter(function () {
+				$('#jardin_img').show();
+				$('section img').show();
+		   	});
+
+		   	$('#concern').mouseleave(function () {
+				$('#jardin_img').hide();
+				$('section img').hide();
+		   	});
+
+			$('.buy').on('click', function() {
+
+				bookAddedtoCart ++;
+				bookInfo = $(this).parent().text();
+				bookName = bookInfo.substr(0, bookInfo.indexOf('Price'));
+						
+				$.post('/addtoCart', {
+					book: bookName,
+					jwt: user_jwt
+				}, function(data, status) {
+					
+					validPurchase = data.validJWT;
+					if (validPurchase) {
+						alert("Book Added to Cart");
+						$('.badge').text(bookAddedtoCart);
+						$('.badge').show();
+					}
+			 	});
+			});
+
+		});
+		
+
+	</script>
+	<div class = "navbar">
+		<a id = "logout" href = "/" onclick = "logOut;">Log Out</a>
+		<div class = "nav-right"> 
+			<button class = "button myBooks" onclick = "displayMyBooks();">My Books</button>
+			<button class = "button contact" onclick = "contact();">Contact</button>
+			<button class = "button viewCart" onclick = "viewCart();">
+				<span class = "order">View Cart</span> 	
+				<span class = "badge"></span>
+			</button>
+		</div>
+	</div>
+	<div id = "welcome">
+		<h1>Welcome to Neitherstone Norwood Books!</h1>
+		<button class = "button signupbtn">Sign Up!</button>
+		<button class = "button loginbtn">Login!</button>
+	</div>
+	<div id = "userInfo">
+  		<label for="username">Username:</label>
+		<input type="text" id="username" name="username"><br><br>
+  		<label for="password">Password:</label>
+  		<input type="password" id="password" name="password"><br><br>
+  		<input type="submit" value="Submit" class = "button" onclick = "checkCreds();" >
+	</div>
+	<div id = "homepage">
+		<h1 id = "home_greeting"></h1>
+		<button class = "button viewBooks">View Books</button>
+	</div>	
+	<div class = "book-container">
+		<div class = "book"><img src = "{{media}}/HP1.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>	
+		<div class = "book"><img src = "{{media}}/HP2.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HP3.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HP4.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HP5.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HP6.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HP7.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HPBundle.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+		<div class = "book"><img src = "{{media}}/HPFilmVaultSeries.jpg" width = "200" height = "200">
+			<button class = "button buy">Add to Cart</button>
+		</div>
+	</div>
+	<div id = "cart_div">
+		<h2>Your Cart</h2>
+		<button class = "button placeorder">Place Order</button>
+	</div>
+	<div id = "my_books">
+		<h2 class = "myBooks">My Books</h2>
+	</div>
+	<div id = "contact">
+		<section>
+			<h2 id = "comp">Compliments</h2>
+			<p>If you have any thanks, compliments, words of praise about this amazing application, 
+			please send them to <br><br> Rebecca Norwood! :) <br> Email Address: norwo009@cougars.csusm.edu</p>
+			<div id = "becca_img">
+				<img src = "/static/Rebecca.jpg" width = "300" height = "300">
+			</div>
+			<h2 id = "concern">Concerns</h2>
+			<p>If you have any negative opinions, thoughts, concerns about this application, please 
+			send those to my professor,  <br><br> Cary Jardin. <br> Email Address: cjardin@jardinlabs.com</p>
+			<div id = "jardin_img">	
+				<img src = "/static/Jardin.jpg" width = "300" height = "300">
+			</div>
+		</section>
+	</div>
+    </body>
+</html>

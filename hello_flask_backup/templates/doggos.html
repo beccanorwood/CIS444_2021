@@ -1,0 +1,110 @@
+<!DOCTYPE html
+<html>
+    <head>
+        <!-- head definitions go here -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    	<link rel = "stylesheet"  href = "/static/style.css"/>
+    </head>
+    <body>
+	    <h1 id = "prompt">Do you want more?"</h1>
+	    <div id = "button_container">
+	    	<button type = "button">Yes!</button>
+	    	<button type = "button">No</button>
+	    </div>
+		<div id = "container">
+			<div>
+				<!--PlaceHolder div-->
+			</div>
+			<div>
+				<h1 id = "pic_header">Expectation</h1>
+				<img src = "{{media}}/Puppy_Lucky.jpg" width = "700" height = "700">
+			</div>
+			<div>
+				<h1 id = "pic_header">Reality</h1>
+				<img src = "{{media}}/Lucky_Reality.jpg" width = "700" height = "700">
+			</div>
+			<div>
+				<h1 id = "pic_header">Expectation</h1>
+				<img src = "{{media}}/Puppy_Chase.jpg" width = "700" height = "700">
+			</div>
+			<div>
+				<h1 id = "pic_header">Reality</h1>
+				<img src = "{{media}}/Chase_Reality.jpg" width = "700" height = "700">
+			</div>
+			<div>
+				<h1 id = "pic_header">Expectation</h1>
+				<img src = "{{media}}/CL_Expectation.jpg" width = "700" height = "700">
+			</div>
+			<div>
+				<h1 id = "pic_header">Reality</h1>
+				<img src = "{{media}}/CL_Reality.jpg" width = "700" height = "700">
+			</div>
+		</div>	
+		<div id = "video_container">
+			<h1 id = "video_header">{{warning}}</h1>
+			<video width = "700" height = "700" controls>
+				<source src = "{{media}}/LuckyGrowling.mp4" type = "video/mp4">
+			</video>
+		</div>
+	<script>
+		
+		var interval; 
+
+		$(document).ready(function() {
+
+			var curr = $("#container > div:gt(0)"); <!-- First div child from #container -->
+			
+
+			interval = setInterval(function() {
+							
+				$('#container > div:first')
+				.fadeOut(1000)
+				.next()
+				.fadeIn(1000)
+				.end()
+				.appendTo('#container');
+				$('#pic_header').fadeIn(1000);
+
+			
+
+			}, 3000);
+
+		});
+		
+		setTimeout(function(){
+			$('#prompt').fadeIn(500);
+			$('button').fadeIn(1000);
+		}, 21000);
+
+
+		$('button:first-child').click(function(){
+			clearInterval(interval);
+			$('#container > div').hide();
+			$('img').hide();
+			$('#prompt').hide();
+			$('#button_container').hide();
+			$('#video_container').show();
+			$('#video_header').show();
+			$('#video_grid_item').show();
+			$('video').show();
+			
+
+			
+		});
+
+		$('button:last-child').click(function(){
+			clearInterval(interval);
+			$('#container > div').hide();
+			$('img').hide();
+			$('#prompt').hide();
+			$('#button_container').hide();
+			$('#video_container').show();
+			$('#video_header').text("Too Bad").show();
+			$('#video_grid_item').show();
+			$('video').show();
+			
+		});
+
+	</script>
+    </body>
+</html>

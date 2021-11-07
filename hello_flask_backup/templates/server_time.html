@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- head definitions go here -->
+	 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    </head>
+    <style>
+
+
+	.container {
+	 display: grid;
+	 position: fixed;
+	 grid-template-columns: auto auto auto;
+	 background-color: black;
+	 padding: 10px;
+	 top: 50%;
+	 left: 50%;
+	 transform: translate(-50%, -50%);
+	}
+
+	.grid_content {
+	 background-color: gray;
+	 border: 1px solid rgba(0,0,0,0.8);
+	 padding: 20px;
+	 text-align: center; 
+	}
+
+    </style>
+    <body> 
+	   <h1>{{warning}}</h1>
+	   <div class = "container">
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>
+			<source src = "{{vid1}}/LuckyGrowling.mp4">
+		</video>
+	   </div>
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>
+			<source src = "{{vid2}}/Chase_Churros.mp4">
+		</video>
+	   </div>
+	   <div class = "grid_content">
+		<video width = "320" height = "240" controls>
+			<source src = "{{vid3}}/LuckyBitingTail.mp4">
+	   </div>
+	            <script>
+
+               			 setInterval( function(){ $('#mytime').html( "Client Time is " + new Date());}, 500);
+				 setInterval( function(){ $('#hello').html( "hello");}, 500);
+        	</script>
+	    <h1 id="mytime"></h1>
+	    <h2 id="hello"> </h2>
+	    <h1>Server Time is {{server_time}}</h1>
+    </body>
+</html>

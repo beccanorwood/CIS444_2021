@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- head definitions go here -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <style>
+
+	body {
+	 background-image: url("media/wallpaper.jpg");
+	}
+	
+	#container, #container > div {
+	 background-color: transparent;
+	 position: fixed;
+	 top: 50%;
+	 left: 50%;
+	 transform: translate(-50%, -50%);	 
+	 border: 5px solid transparent; 
+	 box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.5);
+	}
+
+	h1 {
+	 color: white;
+	 font-size: 5em;
+	 text-align: center; 
+	}
+
+    </style>
+    </head>
+    <body>   
+		<div id = "container">
+			<div>
+				<h1>Expectation</h1>
+				<img src = "media/Puppy_Lucky.jpg" width = "600" height = "600">
+			</div>
+			<div>
+				<h1>Reality</h1>
+				<img src = "media/Lucky_Reality.jpg" width = "600" height = "600">
+			</div>
+			<div>
+				<h1>Expectation</h1>
+				<img src = "media/Puppy_Chase.jpg" width = "600" height = "600">
+			</div>
+			<div>
+				<h1>Reality</h1>
+				<img src = "media/Chase_Reality.jpg" width = "600" height = "600">
+			</div>
+			<div>
+				<h1>Expectation</h1>
+				<img src = "media/CL_Expectation.jpg" width = "600" height = "600">
+			</div>
+			<div>
+				<h1>Reality</h1>
+				<img src = "media/CL_Reality.jpg" width = "600" height = "600">
+			</div>
+
+		</div>
+		
+	</div>
+	<script>
+
+		/* JQuery that shows reality when respective image is displayed */
+		$(document).ready(function (){
+
+			var curr = $("#container > div:gt(0)"); <!-- First div child from #container -->
+
+			setInterval(function() {
+				
+				$('#container > div:first')
+				.fadeOut(1000)
+				.next()
+				.fadeIn(1000)
+				.end()
+				.appendTo('#container');
+
+			}, 3000);
+		});
+		
+	</script>
+    </body>
+</html>
