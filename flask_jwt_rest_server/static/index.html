@@ -33,12 +33,21 @@
 				if (validUser) {
 					$('#userInfo').hide();
 					$('#logout').show();
+					getBooks();
 				}
 				else {
 					alert(JSON.stringify(data.message));
 				}
 			});
 		};
+
+		function getBooks() {
+			secure_get_with_token("/secure_api/get_books", function(data) {
+				console.log("got books");
+				console.log(data)},
+				function(err){
+					console.log(err)});
+		}
 
 
 		/*function send_form(){
