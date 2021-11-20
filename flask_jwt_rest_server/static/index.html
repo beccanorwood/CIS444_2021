@@ -24,7 +24,7 @@
 				alert("Fields cannot be empty!");
 			}
 			
-			$.post("/open_api/userstate", {state: user_state, username: name, password: pwd},
+			$.post("/open_api/userstate", {state: user_state, username: name, password: pwd, booklist: []},
 			function(data, status){
 
 				jwt = data.token;
@@ -42,16 +42,16 @@
 		};
 
 		function getBooks() {
-			secure_get_with_token("/secure_api/get_books", function(data) {
+			secure_get_with_token("/secure_api/get_books", {}, function(data) {
 				console.log("got books");
 
 				booklist = data.book;
 				
+				
 				for(let i = 0; i < booklist.length; i++) {
-					name = booklist[i]['book_name'];
+					bookname = booklist[i]['book_name'];
 					price = booklist[i]['book_price'];
-					book_selection.set('Book' + i, {book_name: name, book_price: price})
-					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					book_selection.set('Book' + i, {book_name: bookname, book_price: price})
 					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name
 								+ "<br><br> "+ "Price: " + '$' 
 								+ book_selection.get('Book' + i).book_price 
@@ -64,32 +64,22 @@
 			
 			},
 				function(err){
-					console.log(err)});
+					console.log("Error: " + err)});
 		}
 
+		function viewCart(booksincart) {
 
-		/*function send_form(){
-			$.post("/open_api/login", { "firstname":$('#username').val(), "password":$('#password').val()},
-                       		function(data, textStatus) {
-					//this gets called when browser receives response from server
-					console.log(data.token);
-					//Set global JWT
-					jwt = data.token;
-					//make secure call with the jwt
-					get_books();
-				}, "json").fail( function(response) {
-					//this gets called if the server throws an error
-					console.log("error");
-					console.log(response);
-				});
-			return false;
+			secure_get_with_token("/secure_api/viewcart", {incartbooks: booksincart}, function(data) {
+				book_names = data.bookname;
+				book_prices = data.bookprices;
+
+				alert("DEBUG VIEW CART BOOK NAMES: " + book_names);
+				alert("DEBUG VIEW CART BOOK PRICES: " + book_prices);
+
+
+			})
 		}
 
-		function get_books(){
-			 //make secure call with the jwt
-                         secure_get_with_token("/secure_api/get_books", function(data){console.log("got books"); console.log(data)},
-                                                function(err){ console.log(err) });
-		}*/
 
 		$(document).ready(function () {
 			$('.signupbtn').on('click', function(){
@@ -104,6 +94,27 @@
 				$('#welcome').hide();
 				$('#userInfo').show();
 			});
+
+			$('.buy').on('click', function() {
+
+				bookAddedtoCart ++;
+				bookInfo = $(this).parent().text();
+				bookName = bookInfo.substr(0, bookInfo.indexOf("Price"));
+				
+				secure_get_with_token("/secure_api/addtocart", {book: bookName, username: name}, function(data) {
+					console.log("Added to Cart Called")
+					validPurchase = data.addedtoCart;
+
+					if (validPurchase) {
+						alert("Book Added to Cart!");
+						alert(data.bookincart);
+						$('.badge').text(bookAddedtoCart);
+						$('.badge').show();
+						}
+
+				})
+
+			})
 
 		});
 
