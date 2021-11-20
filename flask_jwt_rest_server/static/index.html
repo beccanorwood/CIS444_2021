@@ -44,7 +44,25 @@
 		function getBooks() {
 			secure_get_with_token("/secure_api/get_books", function(data) {
 				console.log("got books");
-				console.log(data)},
+
+				booklist = data.book;
+				
+				for(let i = 0; i < booklist.length; i++) {
+					name = booklist[i]['book_name'];
+					price = booklist[i]['book_price'];
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					book_selection.set('Book' + i, {book_name: name, book_price: price})
+					$('.book').eq(i).append("<br><br> " + book_selection.get('Book' + i).book_name
+								+ "<br><br> "+ "Price: " + '$' 
+								+ book_selection.get('Book' + i).book_price 
+								+ "<br><br>");
+					
+					$('.buy').eq(i).appendTo($('.book').eq(i));
+					$('.book').show();
+					$('#signup').hide();
+				}
+			
+			},
 				function(err){
 					console.log(err)});
 		}
@@ -116,6 +134,42 @@
 			<div id = "homepage">
 				<h1 id = "home_greeting"></h1>
 				<button class = "button viewBooks">View Books</button>
+			</div>
+			<div class = "book-container">
+				<div class = "book"><img src = "media/HPBooks/HP1.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>	
+				<div class = "book"><img src = "media/HPBooks/HP2.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HP3.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HP4.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HP5.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HP6.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HP7.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HPBundle.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+				<div class = "book"><img src = "media/HPBooks/HPFilmVaultSeries.jpg" width = "200" height = "200">
+					<button class = "button buy">Add to Cart</button>
+				</div>
+			</div>
+			<div id = "cart_div">
+				<h2>Your Cart</h2>
+				<button class = "button placeorder">Place Order</button>
+			</div>
+			<div id = "my_books">
+				<h2 class = "myBooks">My Books</h2>
 			</div>	
 			
             <!--<div id="login">
