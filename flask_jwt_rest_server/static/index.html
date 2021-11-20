@@ -4,12 +4,45 @@
 	     <script src="https://code.jquery.com/jquery-3.6.0.js" 
 		     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	     <script src="/static/cis444.js"></script>
+		 <link rel ="stylesheet" href="main.css">
     </head>
     <body>
 
 	<script>
-		function send_form(){
-			$.post("/open_api/login", { "firstname":$('#fname').val(), "password":$('#password').val()},
+
+		var user_state;
+		var booklist = new Map();
+		var bookAddedtoCart = 0;
+		const book_selection = new Map();
+		const currState = {NEWUSER: "newuser", USER: "user"};
+
+		function checkCreds() {
+			name = $('#username').val();
+			pwd = $('#password').val();
+
+			if (!name || !pwd) {
+				alert("Fields cannot be empty!");
+			}
+			
+			$.post("/open_api/userstate", {state: user_state, username: name, password: pwd},
+			function(data, status){
+
+				jwt = data.token;
+				validUser = data.authenticated;
+
+				if (validUser) {
+					$('#userInfo').hide();
+					$('#logout').show();
+				}
+				else {
+					alert(JSON.stringify(data.message));
+				}
+			});
+		};
+
+
+		/*function send_form(){
+			$.post("/open_api/login", { "firstname":$('#username').val(), "password":$('#password').val()},
                        		function(data, textStatus) {
 					//this gets called when browser receives response from server
 					console.log(data.token);
@@ -29,18 +62,62 @@
 			 //make secure call with the jwt
                          secure_get_with_token("/secure_api/get_books", function(data){console.log("got books"); console.log(data)},
                                                 function(err){ console.log(err) });
-		}
+		}*/
+
+		$(document).ready(function () {
+			$('.signupbtn').on('click', function(){
+				user_state = currState.NEWUSER;
+				$('#userInfo').show();
+				$('#welcome').hide();
+			});
+
+
+			$('.loginbtn').on('click', function(){
+				user_state = currState.USER; 
+				$('#welcome').hide();
+				$('#userInfo').show();
+			});
+
+		});
 
 	</script>
-            <div id="login">
+			<div class = "navbar">
+				<a id = "logout" href = "/" onclick = "logOut;">Log Out</a>
+				<div class = "nav-right"> 
+					<button class = "button myBooks" onclick = "displayMyBooks();">My Books</button>
+					<button class = "button contact" onclick = "contact();">Contact</button>
+					<button class = "button viewCart" onclick = "viewCart();">
+						<span class = "order">View Cart</span> 	
+						<span class = "badge"></span>
+					</button>
+				</div>
+			</div>
+			<div id = "welcome">
+				<h1>Welcome to Neitherstone Norwood Books!</h1>
+				<button class = "button signupbtn">Sign Up!</button>
+				<button class = "button loginbtn">Login!</button>
+			</div>
+			<div id = "userInfo">
+				  <label for="username">Username:</label>
+				<input type="text" id="username" name="username"><br><br>
+				  <label for="password">Password:</label>
+				  <input type="password" id="password" name="password"><br><br>
+				  <input type="submit" value="Submit" class = "button" onclick = "checkCreds();" >
+			</div>
+			<div id = "homepage">
+				<h1 id = "home_greeting"></h1>
+				<button class = "button viewBooks">View Books</button>
+			</div>	
+			
+            <!--<div id="login">
 	    	<form >
   			<label for="fname">First name:</label><br>
   				<input type="text" id="fname" name="fname" value="John"><br>
   			<label for="password">Password:</label><br>
   				<input type="password" id="password" name="password" value="12212"><br><br>
   			<input type="submit" value="Signup" onclick="return send_form();">
-		</form>
-	    </div>
+			</form>
+	    	</div>-->
     </body>
 </html>
 
