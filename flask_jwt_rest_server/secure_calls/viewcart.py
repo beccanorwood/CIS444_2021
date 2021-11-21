@@ -25,7 +25,11 @@ def handle_request():
     if len(record):
         columns = cursor.description
         booklist = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
+
+        for book in booklist:
+            logger.debug(book)
+
         cursor.close()
-        return json_response(token = create_token( g.jwt_data ), usercart = True)
+        return json_response(token = create_token( g.jwt_data ), usercart = True, cart = booklist)
     else:
         return json_response(token = create_token( g.jwt_data), usercart = False) #return false if user has not books in cart

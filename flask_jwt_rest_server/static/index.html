@@ -76,6 +76,22 @@
 
 				if (booksincart) {
 					alert("You have books in your cart");
+
+					shoppingcart = data.cart;
+
+					for(let i = 0; i < shoppingcart.length; i++) {
+						bname = shoppingcart[i]['book_name'];
+						bprice = shoppingcart[i]['book_price'];
+						$('#cart_div').append(bname + " $" + bprice + "<br><br>");
+					}
+
+					$('.placeorder').appendTo($('#cart_div'));
+					$('.badge').hide();
+					$('#cart_div').show();
+					$('.book-container').hide();
+					$('#userInfo').hide();
+					$('#homepage').hide();
+
 				}
 				else {
 					alert("Error! Your cart is empty");
@@ -113,7 +129,10 @@
 						alert("Book Added to Cart!");
 						$('.badge').text(bookAddedtoCart);
 						$('.badge').show();
-						}
+					}
+					else {
+						alert("Error! You have already purchased this book!")
+					}
 
 				});
 
