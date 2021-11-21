@@ -1,3 +1,4 @@
+import json
 from flask import request, g
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from tools.token_tools import create_token
@@ -8,19 +9,22 @@ from tools.logging import logger
 def handle_request():
     logger.debug("View Cart Handle Request")
 
-    bookprices = []
-
-    booksincart = request.args.get('incartbooks')
+    username = request.args.get('username')
 
     cursor = g.db.cursor()
 
-    for book in booksincart:
-        cursor.execute(sql.SQL("SELECT * FROM books WHERE name = %s", (book,)))
-        price = cursor.fetchone()[2]
+    cursor.execute(sql.SQL("SELECT books.book_name, books.book_price " +
+                           "FROM users, books, shoppingcart " +
+                           "WHERE users.user_id = shoppingcart.user_id " +
+                           "AND books.book_id = shoppingcart.book_id " +
+                           "AND users.username = %s;"), (username,))
 
-        bookprices.append(price)
+    record = cursor.fetchall()
 
-    cursor.close()
-
-    return json_response(bookname = booksincart, bookprices = bookprices)
+    if record is not None:
+        columns = cursor.description
+        booklist = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
+        cursor.close()
+        return json_response(token = create_token( g.jwt_data ), usercart = True)
     
+    return json_response(token = create_token( g.jwt_data), usercart = False) #return false if user has not books in cart

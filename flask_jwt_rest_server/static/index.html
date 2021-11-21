@@ -67,15 +67,17 @@
 					console.log("Error: " + err)});
 		}
 
-		function viewCart(booksincart) {
+		function viewCart() {
 
-			secure_get_with_token("/secure_api/viewcart", {incartbooks: booksincart}, function(data) {
-				book_names = data.bookname;
-				book_prices = data.bookprices;
+			secure_get_with_token("/secure_api/viewcart", {username: name}, function(data) {
+				booksincart = data.usercart;
 
-				alert("DEBUG VIEW CART BOOK NAMES: " + book_names);
-				alert("DEBUG VIEW CART BOOK PRICES: " + book_prices);
-
+				if (booksincart) {
+					alert("You have books in your cart");
+				}
+				else {
+					("Your cart is empty");
+				}
 
 			})
 		}
@@ -107,7 +109,6 @@
 
 					if (validPurchase) {
 						alert("Book Added to Cart!");
-						alert(data.bookincart);
 						$('.badge').text(bookAddedtoCart);
 						$('.badge').show();
 						}

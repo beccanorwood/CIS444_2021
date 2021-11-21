@@ -18,14 +18,13 @@ def handle_request():
     logger.debug("Username: " + username)
 
     cursor = g.db.cursor()
-    cursor.execute(sql.SQL("SELECT * FROM users WHERE username = %s", (username)))
+    cursor.execute(sql.SQL("SELECT * FROM users WHERE username = %s;"), (username,))
     userid = cursor.fetchone()[0]
 
-    cursor.execte(sql.SQL("SELECT * FROM books WHERE book_name = %s", (bookAdded)))
+    cursor.execute(sql.SQL("SELECT * FROM books WHERE book_name = %s;"), (bookAdded,))
     bookid = cursor.fetchone()[0]
 
-    cursor.execute(sql.SQL("INSERT INTO shoppingcart (user_id, book_id) VALUES (%s, %s);", (userid, bookid))) 
+    cursor.execute(sql.SQL("INSERT INTO shoppingcart (user_id, book_id) VALUES (%s, %s);"), (userid, bookid)) 
     g.db.commit()
-
 
     return json_response( token = create_token( g.jwt_data ) , addedtoCart = True)
