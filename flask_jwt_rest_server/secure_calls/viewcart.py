@@ -20,11 +20,12 @@ def handle_request():
                            "AND users.username = %s;"), (username,))
 
     record = cursor.fetchall()
+    logger.debug(record)
 
-    if record is not None:
+    if len(record):
         columns = cursor.description
         booklist = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
         cursor.close()
         return json_response(token = create_token( g.jwt_data ), usercart = True)
-    
-    return json_response(token = create_token( g.jwt_data), usercart = False) #return false if user has not books in cart
+    else:
+        return json_response(token = create_token( g.jwt_data), usercart = False) #return false if user has not books in cart

@@ -72,14 +72,16 @@
 			secure_get_with_token("/secure_api/viewcart", {username: name}, function(data) {
 				booksincart = data.usercart;
 
+				alert("View Cart Books in Cart Result: " + booksincart);
+
 				if (booksincart) {
 					alert("You have books in your cart");
 				}
 				else {
-					("Your cart is empty");
+					alert("Error! Your cart is empty");
 				}
 
-			})
+			});
 		}
 
 
@@ -113,9 +115,9 @@
 						$('.badge').show();
 						}
 
-				})
+				});
 
-			})
+			});
 
 		});
 
