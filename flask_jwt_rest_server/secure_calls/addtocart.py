@@ -34,13 +34,7 @@ def handle_request():
                            "AND users.username = %s;"), (username,))
 
     result = cursor.fetchall()
-    logger.debug(result)
-
-    #if len(result):
-    #    return json_response( token = create_token( g.jwt_data ), addedtoCart = False)
-
-
-    #test result
+ 
     for book in result:
         if bookAdded in book:
             return json_response( token = create_token( g.jwt_data ), addedtoCart = False)
