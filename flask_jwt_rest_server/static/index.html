@@ -115,23 +115,38 @@
 				$('#userInfo').show();
 			});
 
+			$('.placeorder').on('click', function() {
+
+				/*Call purchase endpoint with username to get books in user's shopping cart*/ 
+				secure_get_with_token("/secure_api/purchase", {username: name}, function (data) {
+					console.log("Place Order Function Called");
+
+					alert(data);
+
+					/*Return a boolean if the purchase is successful*/
+
+				});
+
+			});
+
 			$('.buy').on('click', function() {
 
-				bookAddedtoCart ++;
 				bookInfo = $(this).parent().text();
 				bookName = bookInfo.substr(0, bookInfo.indexOf("Price"));
 				
 				secure_get_with_token("/secure_api/addtocart", {book: bookName, username: name}, function(data) {
-					console.log("Added to Cart Called")
+					console.log("Added to Cart Called");
 					validPurchase = data.addedtoCart;
 
 					if (validPurchase) {
+						bookAddedtoCart ++;
+
 						alert("Book Added to Cart!");
 						$('.badge').text(bookAddedtoCart);
 						$('.badge').show();
 					}
 					else {
-						alert("Error! You have already purchased this book!")
+						alert("Error! This book is already in your cart!")
 					}
 
 				});

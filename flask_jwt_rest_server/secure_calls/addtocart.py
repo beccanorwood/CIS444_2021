@@ -26,18 +26,27 @@ def handle_request():
     bookid = cursor.fetchone()[0]
 
 
-    #Don't allow user to add a book they have already puchased into their shopping cart 
+    #Don't allow user to add a book they already have into their shopping cart 
     cursor.execute(sql.SQL("SELECT books.book_name " +
-                           "FROM users, books, purchases " +
-                           "WHERE users.user_id = purchases.user_id " +
-                           "AND books.book_id = purchases.book_id " +
+                           "FROM users, books, shoppingcart " +
+                           "WHERE users.user_id = shoppingcart.user_id " +
+                           "AND books.book_id = shoppingcart.book_id " +
                            "AND users.username = %s;"), (username,))
 
-    result = cursor.fetchall()   
+    result = cursor.fetchall()
+    logger.debug(result)
 
-    if len(result):
-        return json_response( token = create_token( g.jwt_data ), addedtoCart = False)
+    #if len(result):
+    #    return json_response( token = create_token( g.jwt_data ), addedtoCart = False)
+
+
+    #test result
+    for book in result:
+        if bookAdded in book:
+            return json_response( token = create_token( g.jwt_data ), addedtoCart = False)
 
     cursor.execute(sql.SQL("INSERT INTO shoppingcart (user_id, book_id) VALUES (%s, %s);"), (userid, bookid)) 
     g.db.commit()
+    cursor.close()
+
     return json_response( token = create_token( g.jwt_data ) , addedtoCart = True)
