@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request, redirect, url_for, g
 from flask_json import FlaskJSON, JsonError, json_response, as_json
+from db_con import get_db_instance, get_db
 import jwt
 
 import sys
@@ -8,15 +9,12 @@ import bcrypt
 import traceback
 
 
-from db_con import get_db_instance, get_db
-
 from tools.token_required import token_required
 from tools.get_aws_secrets import get_secrets
 
 from tools.logging import logger
 
 ERROR_MSG = "Ooops.. Didn't work!"
-
 
 #Create our app
 app = Flask(__name__)

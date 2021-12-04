@@ -6,12 +6,12 @@ def handle_request():
     logger.debug("Test Handle Request")
 
     cursor = g.db.cursor()
-    cursor.execute("SELECT * FROM books")
+    cursor.execute("SELECT * FROM food")
     record = cursor.fetchall()
 
     columns  = cursor.description
-    booklist = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
+    foodlist = [{columns[index][0]:column for index, column in enumerate(value)} for value in record]
     cursor.close()
 
 
-    return json_response( book = booklist)
+    return json_response( food = foodlist)
