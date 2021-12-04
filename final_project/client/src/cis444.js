@@ -1,6 +1,8 @@
+import $ from 'jquery';
+
 var jwt = null
 function secure_get_with_token(endpoint, data_to_send, on_success_callback, on_fail_callback){
-	xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 	function setHeader(xhr) {
 		xhr.setRequestHeader('Authorization', 'Bearer:'+jwt);
 	}
@@ -19,3 +21,6 @@ function secure_get_with_token(endpoint, data_to_send, on_success_callback, on_f
 		beforeSend: setHeader
 	});
 }
+
+
+export {secure_get_with_token}

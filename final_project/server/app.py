@@ -1,13 +1,12 @@
 from flask import Flask,render_template,request, redirect, url_for, g
 from flask_json import FlaskJSON, JsonError, json_response, as_json
 from db_con import get_db_instance, get_db
-import jwt
 
+import jwt
 import sys
 import datetime
 import bcrypt
 import traceback
-
 
 from tools.token_required import token_required
 from tools.get_aws_secrets import get_secrets
@@ -32,7 +31,7 @@ def init_new_env():
 #So.. we redirect to the endpoint we want to load the base page
 @app.route('/') #endpoint
 def index():
-    return redirect('/src/App.js')
+    return redirect('/static/index.html')
 
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])
@@ -82,5 +81,4 @@ def exec_proc(proc_name):
 
 
 if __name__ == '__main__':
-    app.run()
-
+    app.run(debug = True)
