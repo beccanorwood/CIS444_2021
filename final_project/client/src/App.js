@@ -29,7 +29,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h2>iDunno?</h2>
-        <section><SignUp/></section>
+        <section><UserAuth/></section>
       </header>
     </div>
   );
