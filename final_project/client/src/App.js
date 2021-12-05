@@ -2,6 +2,7 @@ import './App.css';
 //import { secure_get_with_token } from './cis444'
 import React, {useEffect} from 'react';
 
+import { AddFriend } from './conponents.js/AddFriend';
 import {UserAuth} from './conponents.js/UserAuth'
 import {SignUp} from './conponents.js/SignUp'
 
@@ -29,7 +30,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h2>iDunno?</h2>
-        <section><UserAuth/></section>
+        <section><AddFriend/></section>
       </header>
     </div>
   );
