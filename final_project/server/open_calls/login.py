@@ -13,36 +13,33 @@ def handle_request():
 
     logger.debug("Login Handle Request")
 
-    #test = request.get_json()
+    test = request.get_json()
 
-    print(request.get_json('username'))
-
-    return request.get_json()
-
+    username = test['username']
+    password = test['password']
 
 
-    #password = request.form['password']
-    #username = request.form['username']
-    
-    #password_from_user_form = password
-    #token = {
-    #        "sub": username
-    #        }
+    print("Username: ", username)
+    print("Password: ", password)
 
-    #cursor = g.db.cursor()
-    #cursor.execute(sql.SQL("SELECT * FROM users WHERE username = %s;"), (token['sub'],))
-    #record = cursor.fetchone()
+    token = {
+           "sub": username
+           }
+
+    cursor = g.db.cursor()
+    cursor.execute(sql.SQL("SELECT * FROM users WHERE username = %s;"), (token['sub'],))
+    record = cursor.fetchone()
 
     #Case for if user is not in database 
-    #if not record: 
-    #    logger.debug("Username was not found in database")
-    #    return json_response( status_ = 401, message = "Invalid Credentials", authenticated = False)
+    if not record: 
+        logger.debug("Username was not found in database")
+        return json_response( status_ = 401, message = "Invalid Credentials", authenticated = False)
 
-    #else:
-    #    salted_password = record[2]
-    #    cursor.close()
+    else:
+        salted_password = record[2]
+        cursor.close()
 
-    #    if (bcrypt.checkpw( bytes(password_from_user_form, 'utf-8'), salted_password.encode() )):
-    #        return json_response( token = create_token(token) , authenticated = True)
-    #    else:
-    #        return json_response( status_ = 401, message = "Invalid password", authenticated = False)
+        if (bcrypt.checkpw( bytes(password, 'utf-8'), salted_password.encode() )):
+            return json_response( token = create_token(token) , authenticated = True)
+        else:
+            return json_response( status_ = 401, message = "Invalid password", authenticated = False)

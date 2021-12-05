@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {AddFriend} from './AddFriend'
 
 function UserAuth() {
 
@@ -47,28 +48,19 @@ function UserAuth() {
 //Method to call flask_api to check login credentials
 async function CheckCreds(u_username, u_password) {
 
-    /*useEffect(() => {
-        fetch('/open_api/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username: u_username, password: u_password})
-        })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
-    }, [u_username, u_password]);*/
-
-
-    const response = await fetch('/open_api/login', {
+    /**
+     * API call sends a json object to the server and receives one in response 
+     */
+    await fetch('/open_api/login', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
     },
         body: JSON.stringify({username: u_username, password: u_password})
     })
-
-    if (response.ok) {
-        console.log("It Worked!");
-    }
+    .then(res => res.json())
+    .then(res => console.log(res));
 
 }
 

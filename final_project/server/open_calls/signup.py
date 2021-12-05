@@ -8,6 +8,14 @@ import bcrypt
 def signup_request(username, password):
     logger.debug("Signup Handle Request")
 
+    test = request.get_json()
+
+    username = test['username']
+    password = test['password']
+
+    print("Sign Up API Username: ", username)
+    print("Sign Up API Password: ", password)
+
     user = {
             "sub": username
             }

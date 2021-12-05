@@ -53,16 +53,18 @@ function SignUp() {
 
 async function CheckCreds(u_username, u_password) {
     
-    const response = await fetch('/open_api/signup,', {
+    await fetch('/open_api/signup,', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
     },
         body: JSON.stringify({username: u_username, password: u_password})
     })
-
-    if (response.ok) {
-        console.log("It Worked!");
-    }
+    .then(res => res.json())
+    .then(res => console.log(res));
+    
+    
 } 
 
 
