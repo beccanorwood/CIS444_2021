@@ -3,6 +3,7 @@ import './App.css';
 import React, {useEffect} from 'react';
 
 import {UserAuth} from './conponents.js/UserAuth'
+import {SignUp} from './conponents.js/SignUp'
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h2>iDunno?</h2>
-        <section><UserAuth/></section>
+        <section><SignUp/></section>
       </header>
     </div>
   );

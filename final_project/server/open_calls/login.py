@@ -17,7 +17,7 @@ def handle_request():
 
     print(request.get_json('username'))
 
-    return request.get_json('username')
+    return request.get_json()
 
 
 

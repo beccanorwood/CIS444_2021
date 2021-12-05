@@ -25,7 +25,7 @@ function UserAuth() {
                         <i className="lock icon"></i>
                     </div>
                     </div>
-                    <div className="ui blue submit button" onClick = {CheckCreds(u_username, u_password)}>Login</div>
+                    <button className="fluid ui violet button" onClick = {async() => {CheckCreds(u_username, u_password)}} >Login</button>
                 </div>
                 </div>
                 <div className="middle aligned column">
@@ -45,9 +45,9 @@ function UserAuth() {
 
 
 //Method to call flask_api to check login credentials
-function CheckCreds(u_username, u_password) {
+async function CheckCreds(u_username, u_password) {
 
-    useEffect(() => {
+    /*useEffect(() => {
         fetch('/open_api/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'
@@ -56,7 +56,20 @@ function CheckCreds(u_username, u_password) {
         })
         .then((response) => response.json())
         .then((data) => console.log(data));
-    }, [u_username, u_password]);
+    }, [u_username, u_password]);*/
+
+
+    const response = await fetch('/open_api/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'
+    },
+        body: JSON.stringify({username: u_username, password: u_password})
+    })
+
+    if (response.ok) {
+        console.log("It Worked!");
+    }
+
 }
 
 
