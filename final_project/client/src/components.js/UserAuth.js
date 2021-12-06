@@ -4,8 +4,6 @@ import {AddFriend} from './AddFriend';
 import {SignUp} from './SignUp';
 
 
-
-
 class UserAuth extends Component {
 
     constructor() {
