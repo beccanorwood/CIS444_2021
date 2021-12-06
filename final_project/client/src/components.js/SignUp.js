@@ -42,7 +42,7 @@ function SignUp() {
                     <i className="lock icon"></i>
                 </div>
                 </div>
-                <button className="fluid ui violet button" onClick = {async() => CheckCreds(u_username, u_password)}>SignUp</button>
+                <button className="fluid ui violet button" onClick = {async() => CheckCreds(u_username, u_password, u_firstname, u_lastname)}>SignUp</button>
             </div>
             </div>
         </div>
@@ -51,15 +51,15 @@ function SignUp() {
 
 }
 
-async function CheckCreds(u_username, u_password) {
+async function CheckCreds(u_username, u_password, u_firstname, u_lastname) {
     
-    await fetch('/open_api/signup,', {
+    await fetch('/open_api/signup', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
     },
-        body: JSON.stringify({username: u_username, password: u_password})
+        body: JSON.stringify({username: u_username, password: u_password, firstname: u_firstname, lastname: u_lastname})
     })
     .then(res => res.json())
     .then(res => console.log(res));
