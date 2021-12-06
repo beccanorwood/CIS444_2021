@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useEffect} from 'react';
+import React, {Component, useEffect} from 'react';
 
 import {AddFriend} from './components.js/AddFriend';
 import {UserAuth} from './components.js/UserAuth'
@@ -12,10 +12,11 @@ function App() {
     <div className="App">
         <h2>iDunno?</h2>
         <div className='row'>
-          <p><Simple/></p>
+          <section><UserAuth/></section>
         </div>
     </div>
   )
 }
+
 
 export default App;

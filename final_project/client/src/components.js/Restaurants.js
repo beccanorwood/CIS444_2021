@@ -150,13 +150,6 @@ function Simple () {
  */
 function GetImages () {
 
-    //const [response] = await secure_get_with_token(fetch('/secure_api/get_restaurants'));
- 
-    return (
-    <>
-        <img src = {"https://idunno-images.s3.amazonaws.com/idunno_restaurants/BJsRestaurant.jpeg"} alt = "" width="100" height = "100"/>
-    </>
-    )
 }
 
 export {Simple}

@@ -53,7 +53,7 @@ function SignUp() {
 
 async function CheckCreds(u_username, u_password, u_firstname, u_lastname) {
     
-    await fetch('/open_api/signup', {
+    const result = await fetch('/open_api/signup', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -62,9 +62,14 @@ async function CheckCreds(u_username, u_password, u_firstname, u_lastname) {
         body: JSON.stringify({username: u_username, password: u_password, firstname: u_firstname, lastname: u_lastname})
     })
     .then(res => res.json())
-    .then(res => console.log(res));
     
     
+    if (!(result.authenticated)) {
+        alert("Username is already taken. Please try again");
+    }
+    else {
+        alert("Succes! You will now be redirected to the next page");
+    }
 } 
 
 
