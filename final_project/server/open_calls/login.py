@@ -9,8 +9,6 @@ from tools.logging import logger
 import bcrypt
 
 def handle_request():
-
-
     logger.debug("Login Handle Request")
 
     test = request.get_json()

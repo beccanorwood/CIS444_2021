@@ -1,63 +1,84 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Component} from 'react';
+import {secure_get_with_token} from './cis444';
 
-const AddFriend = () => {
 
-    const [showFriendForm, setShowFriendForm] = useState(false);
-    const onClick = () => {
-        setShowFriendForm(true);
+class AddFriend extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            visible: true,
+            inputfriendvisible: false,
+            joinroomvisible: false
+        }
+        this.onInputChange = this.onInputChange.bind(this);
+        this.onAddFriendClick = this.onAddFriendClick.bind(this);
+        this.onInputFriendUsername = this.onInputFriendUsername.bind(this);
     }
 
-    return showFriendForm ?
-    <FriendUsername/>
-    : (
-        <>
-            <div className="ui blue inverted circular segment">
-                <h2 button className="ui header" onClick = {onClick}>
-                    Add Friend
-                <div className="sub header">Click Here!</div>
-                </h2>
-            </div>
-        </>
-    )
 
-}
-
-/**
- * Simple Button Component that displays when user's enters friend username
- */
-const JoinRoom = () => <button className="ui violet button">Join Room</button>
-
-
-const FriendUsername = () => {
-
-    const [showJoinRoomButton, setShowJoinRoomButton] = useState(false);
-    const onClick = () => {
-        setShowJoinRoomButton(true);
+    onInputChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
-    return showJoinRoomButton ?
-    <JoinRoom/>
-    : (
-        <>
-            <div class="ui input">
-                <input type="text" placeholder="Search..."/>
-                <button className = "fluid ui violet button" onClick = {onClick}>Submit</button>
+    onInputFriendUsername() {
+        console.log("On Input Friend Username: " + this.state);
+        this.setState({joinroomvisible: true})
+    }
+
+    onAddFriendClick() {
+        this.setState({inputfriendvisible: true})
+    }
+
+
+    async CheckFriendUsername(friendusername) {
+
+        const response = secure_get_with_token(fetch('/secure_api/addfriend', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({friendusername: friendusername})
+        })
+        .then(res => res.json())
+        )
+      
+        if (!response.valid) {
+            alert("User does not exist! Try again");
+        }
+        else {
+            alert("Success! You can now begin your food search session");
+            this.setState({visible: false});
+        }
+
+    }
+
+
+    render() {
+
+        const JoinRoom = () => <button className="ui violet button">Join Room</button>
+
+        const buttonText = this.state.inputfriendvisible ? "Input Friend Username" : "Add Friend";
+        const buttonsubText = this.state.inputfriendvisible ? "" : "Click Here!";
+
+        if (this.state.joinroomvisible) {
+            return <div><JoinRoom/></div>
+        }
+
+        else return (
+
+            <div className="ui input">
+                <input type="text" placeholder="Friend Username" name ="friendusername" value = {this.state.name} onChange = {this.onInputChange}/>
+                <button className = "fluid ui violet button" onClick = {this.onInputFriendUsername}>Add Friend</button>
             </div>
-        </>
-    )
+        )
+
+    }
+
 }
-
-/**
- * On button press, will ask user to input friend's username 
- */
-/*async function SectionButtonTest() {
-    alert('It Worked!');
-}*/
-
-
-/**
- * If valid username is sent to API, user has option to join room 
- */
 
 
 export {AddFriend}

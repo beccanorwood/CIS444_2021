@@ -1,19 +1,19 @@
-import React, {useState, useEffect, Component} from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react';
 import {AddFriend} from './AddFriend';
 import {SignUp} from './SignUp';
-
+import Cookies from 'js-cookie';
 
 class UserAuth extends Component {
 
     constructor() {
         super();
         this.state = {
-           visible: true
-        };
+           visible: true,
+           signupvisible: false
+        }
         this.onInputChange = this.onInputChange.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
-        
+        this.onSignUpClick = this.onSignUpClick.bind(this);
     }
 
     onInputChange(e) {
@@ -49,17 +49,29 @@ class UserAuth extends Component {
         }
         else {
             alert("Success! You will now be redirected!");
+            
+            Cookies.set('token', response.token, {expires: 1, path:""})
+            alert(Cookies.get('token'));
             this.setState({visible: false});
         }
 
     }
 
 
+    onSignUpClick() {
+        this.setState({signupvisible: true});
+    }
+
+    
 
     render() {
 
         if (!this.state.visible) {
             return <div><AddFriend/></div>   
+        }
+
+        else if (this.state.signupvisible) {
+            return <div><SignUp/></div>
         }
         
         else {
@@ -87,8 +99,8 @@ class UserAuth extends Component {
                             </div>
                             </div>
                             <div className="middle aligned column">
-                            <div className="ui big button">
-                                <i className onClick = "signup icon"></i>
+                            <div className="ui big button" onClick = {this.onSignUpClick} >
+                                <i className = "signup icon"></i>
                                 Sign Up
                             </div>
                             </div>
