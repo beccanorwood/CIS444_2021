@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { secure_get_with_token } from './cis444'
 import TinderCard from 'react-tinder-card';
+import Cookies from 'js-cookie';
 
 
 const imgs = [
@@ -49,6 +50,9 @@ const imgs = [
 function Simple () {
     const [currentIndex, setCurrentIndex] = useState(imgs.length - 1)
     const [lastDirection, setLastDirection] = useState()
+
+    const [direction, setDirection] = useState(); //Directions that are sent to API call to check matches 
+
     // used for outOfFrame closure
     const currentIndexRef = useRef(currentIndex)
   
@@ -86,6 +90,7 @@ function Simple () {
   
     const swipe = async (dir) => {
       if (canSwipe && currentIndex < imgs.length) {
+        await APITest(dir); //Test API call
         await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
       }
     }
@@ -97,7 +102,27 @@ function Simple () {
       updateCurrentIndex(newIndex)
       await childRefs[newIndex].current.restoreCard()
     }
+
+
+    const APITest = async (dir) => {
+
+      secure_get_with_token(await fetch('/secure_api/checkmatch', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': Cookies.get('jwt')
+        },
+        body: JSON.stringify({direction: dir})
+      })
+      .then((response) => response.json())
+      .then((json) => setDirection(json))
+      )
   
+      console.log(test);
+    }
+
+
     return (
       <div>
         <link
@@ -144,11 +169,5 @@ function Simple () {
     )
   }
 
-/**
- * API Call to get restaurant images and then return them on screen
- */
-function GetImages () {
-
-}
 
 export {Simple}

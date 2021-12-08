@@ -3,7 +3,6 @@ from tools.token_tools import create_token
 from flask import request, g
 from flask_json import json_response
 from psycopg2 import sql
-from tools.get_aws_secrets import get_secrets
 from random import seed
 from random import randint 
 
