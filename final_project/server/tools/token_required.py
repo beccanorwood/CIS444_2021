@@ -13,8 +13,6 @@ def token_required(f):
     def _verify(*args, **kwargs):
         secrets = get_secrets()
         auth_headers = request.headers.get('Authorization', '').split(':')
-        logger.debug("Token Wrapper: ", auth_headers[0])
-        logger.debug(len(auth_headers))
 
         invalid_msg = {
             'message': 'Invalid token. Registeration and / or authentication required',

@@ -1,5 +1,6 @@
-import React, {useState, useEffect, Component} from 'react';
+import React, {Component} from 'react';
 import {secure_get_with_token} from './cis444';
+import { Simple } from './Restaurants';
 import Cookies from 'js-cookie';
 
 class AddFriend extends Component {
@@ -10,7 +11,8 @@ class AddFriend extends Component {
             json_response: null,
             visible: true,
             inputfriendvisible: false,
-            joinroomvisible: false
+            joinroomvisible: false,
+            showRestaurants: false,
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.onAddFriendClick = this.onAddFriendClick.bind(this);
@@ -60,6 +62,7 @@ class AddFriend extends Component {
             }
             else {
                 alert('Success! You will be redirected to your room shortly!');
+                this.setState({showRestaurants: true});
                 this.setState({visible: false});
             }
     
@@ -75,6 +78,10 @@ class AddFriend extends Component {
 
         if (this.state.joinroomvisible) {
             return <div><JoinRoom/></div>
+        }
+
+        else if (this.state.showRestaurants) {
+            return <div><Simple/></div>
         }
 
         else return (
