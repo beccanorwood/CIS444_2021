@@ -8,8 +8,9 @@ class UserAuth extends Component {
     constructor() {
         super();
         this.state = {
-           visible: true,
-           signupvisible: false
+            'jwt': "",
+            visible: true,
+            signupvisible: false
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -32,7 +33,6 @@ class UserAuth extends Component {
     async CheckCreds(u_username, u_password) {
 
         //API call sends a json object to the server and receives one in response 
-
         const response = await fetch('/open_api/login', {
             method: 'POST',
             headers: {
@@ -49,9 +49,12 @@ class UserAuth extends Component {
         }
         else {
             alert("Success! You will now be redirected!");
-            
-            Cookies.set('token', response.token, {expires: 1, path:""})
-            alert(Cookies.get('token'));
+
+            window.name = response.token;
+            const jwt = window.name;
+  
+            Cookies.set('jwt', jwt, {expires: 1, path:""})
+            alert(Cookies.get('jwt'));
             this.setState({visible: false});
         }
 
@@ -119,4 +122,4 @@ class UserAuth extends Component {
 }
 
 
-export {UserAuth};
+export {UserAuth, Cookies};

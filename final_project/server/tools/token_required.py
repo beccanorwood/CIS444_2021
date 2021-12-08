@@ -13,6 +13,8 @@ def token_required(f):
     def _verify(*args, **kwargs):
         secrets = get_secrets()
         auth_headers = request.headers.get('Authorization', '').split(':')
+        logger.debug("Token Wrapper: ", auth_headers[0])
+        logger.debug(len(auth_headers))
 
         invalid_msg = {
             'message': 'Invalid token. Registeration and / or authentication required',
@@ -23,11 +25,11 @@ def token_required(f):
             'authenticated': False
         }
 
-        if len(auth_headers) != 2:
+        if len(auth_headers) != 1:
             return json_response(status_=401 ,message=invalid_msg)
 
         try:
-            token = auth_headers[1]
+            token = auth_headers[0]
             logger.debug("Got token")
             data = jwt.decode(token,  secrets['JWT'], algorithms=["HS256"])
             #set global jwt_data

@@ -1,12 +1,13 @@
 import React, {useState, useEffect, Component} from 'react';
 import {secure_get_with_token} from './cis444';
-
+import Cookies from 'js-cookie';
 
 class AddFriend extends Component {
 
     constructor() {
         super();
         this.state = {
+            json_response: null,
             visible: true,
             inputfriendvisible: false,
             joinroomvisible: false
@@ -25,35 +26,43 @@ class AddFriend extends Component {
 
     onInputFriendUsername() {
         console.log("On Input Friend Username: " + this.state);
-        this.setState({joinroomvisible: true})
+        this.setState({joinroomvisible: true});
     }
 
     onAddFriendClick() {
-        this.setState({inputfriendvisible: true})
+        this.setState({inputfriendvisible: true});
     }
 
 
     async CheckFriendUsername(friendusername) {
 
-        const response = secure_get_with_token(fetch('/secure_api/addfriend', {
+        secure_get_with_token(await fetch('/secure_api/addfriend', {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Authorization': Cookies.get('jwt')
             },
-            body: JSON.stringify({friendusername: friendusername})
-        })
-        .then(res => res.json())
-        )
-      
-        if (!response.valid) {
-            alert("User does not exist! Try again");
-        }
-        else {
-            alert("Success! You can now begin your food search session");
-            this.setState({visible: false});
-        }
+            body: JSON.stringify({friendusername: friendusername}), function(data) {
+                console.log(data);
+            }
+            })
+            .then((response) => response.json())
+            .then((json) => this.setState({json_response: json})));
+        
 
+            console.log(this.state.json_response);
+            console.log(this.state.json_response.valid);
+
+
+            if (!(this.state.json_response.valid)) {
+                alert("User does not exist, Try again!");
+            }
+            else {
+                alert('Success! You will be redirected to your room shortly!');
+                this.setState({visible: false});
+            }
+    
     }
 
 
@@ -61,8 +70,8 @@ class AddFriend extends Component {
 
         const JoinRoom = () => <button className="ui violet button">Join Room</button>
 
-        const buttonText = this.state.inputfriendvisible ? "Input Friend Username" : "Add Friend";
-        const buttonsubText = this.state.inputfriendvisible ? "" : "Click Here!";
+        //const buttonText = this.state.inputfriendvisible ? "Input Friend Username" : "Add Friend";
+        //const buttonsubText = this.state.inputfriendvisible ? "" : "Click Here!";
 
         if (this.state.joinroomvisible) {
             return <div><JoinRoom/></div>
@@ -72,7 +81,7 @@ class AddFriend extends Component {
 
             <div className="ui input">
                 <input type="text" placeholder="Friend Username" name ="friendusername" value = {this.state.name} onChange = {this.onInputChange}/>
-                <button className = "fluid ui violet button" onClick = {this.onInputFriendUsername}>Add Friend</button>
+                <button className = "fluid ui violet button" onClick = {async() => this.CheckFriendUsername(this.state.friendusername)}>Add Friend</button>
             </div>
         )
 
