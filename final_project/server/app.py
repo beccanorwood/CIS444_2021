@@ -12,6 +12,7 @@ from tools.token_required import token_required
 from tools.get_aws_secrets import get_secrets
 
 from tools.logging import logger
+from UserGraph import Graph
 
 ERROR_MSG = "Ooops.. Didn't work!"
 
@@ -25,6 +26,10 @@ def init_new_env():
     if 'db' not in g:
         g.db = get_db()
 
+    g.graph = Graph({
+        'glowworm': ['neitherstone', 'testuser'],
+        'neitherstone': ['blah', 'blah2']
+    }) #Instantiate the graph with username as param for edges
     g.secrets = get_secrets()
 
 #This gets executed by default by the browser if no page is specified

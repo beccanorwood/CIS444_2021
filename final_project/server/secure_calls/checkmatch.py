@@ -12,4 +12,9 @@ def handle_request():
     direction = receivedData['direction']
     print("Direction: ", direction)
 
+    print("Token: ", g.jwt_data['sub'])
+
+    
+
+
     return json_response(status_= 200, valid = True, message = "Success")

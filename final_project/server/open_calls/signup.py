@@ -14,11 +14,13 @@ def handle_request():
     password = test['password']
     firstname = test['firstname']
     lastname = test['lastname']
+    email = test['email']
 
     print("Sign Up API Username: ", username)
     print("Sign Up API Password: ", password)
     print("Sign Up API Firstname: ", firstname)
     print("Sign Up Lastname: ", lastname)
+    print("Sign Up Email: ", email)
 
 
     user = {
@@ -32,7 +34,7 @@ def handle_request():
     record = cursor.fetchone()
 
     if record is None:
-        cursor.execute(sql.SQL("INSERT into users (username, password, firstname, lastname) VALUES (%s, %s, %s, %s);"), (username, salted_password.decode('utf-8'), firstname, lastname))
+        cursor.execute(sql.SQL("INSERT into users (username, password, firstname, lastname, email) VALUES (%s, %s, %s, %s, %s);"), (username, salted_password.decode('utf-8'), firstname, lastname, email, ))
         g.db.commit()
         cursor.close()
         return json_response(token = create_token(user), authenticated = True)

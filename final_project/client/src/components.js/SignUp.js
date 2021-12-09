@@ -25,7 +25,7 @@ class SignUp extends Component {
         console.log(this.state.username);
     }
 
-    async CheckCreds(u_username, u_password, u_firstname, u_lastname) {
+    async CheckCreds(u_username, u_password, u_email, u_firstname, u_lastname) {
     
         const result = await fetch('/open_api/signup', {
             method: 'POST',
@@ -33,7 +33,7 @@ class SignUp extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
         },
-            body: JSON.stringify({username: u_username, password: u_password, firstname: u_firstname, lastname: u_lastname})
+            body: JSON.stringify({username: u_username, password: u_password, email: u_email, firstname: u_firstname, lastname: u_lastname})
         })
         .then(res => res.json())
         
@@ -74,6 +74,12 @@ class SignUp extends Component {
                         </div>
                         </div>
                         <div className="field">
+                        <label>GMAIL</label>
+                        <div className="ui left icon input">
+                            <input type="text" name = "email" value = {this.state.name} onChange = {this.onInputChange}/>
+                        </div>
+                        </div>
+                        <div className="field">
                         <label>Username</label>
                         <div className="ui left icon input">
                             <input type="text" name = "username" value = {this.state.name} onChange = {this.onInputChange}/>
@@ -88,7 +94,7 @@ class SignUp extends Component {
                         </div>
                         </div>
                         <button className="fluid ui violet button" onClick = {async() => 
-                            {this.CheckCreds(this.state.username, this.state.password, this.state.firstname, this.state.lastname)}}>
+                            {this.CheckCreds(this.state.username, this.state.password, this.state.email, this.state.firstname, this.state.lastname)}}>
                                 SignUp
                         </button>
                     </div>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {AddFriend} from './AddFriend';
 import {SignUp} from './SignUp';
+import { Friends } from './Friends';
 import Cookies from 'js-cookie';
 
 class UserAuth extends Component {
@@ -70,7 +71,8 @@ class UserAuth extends Component {
     render() {
 
         if (!this.state.visible) {
-            return <div><AddFriend/></div>   
+            //return <div><AddFriend/></div>   
+            return <div><Friends/></div>
         }
 
         else if (this.state.signupvisible) {

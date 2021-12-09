@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {secure_get_with_token} from './cis444';
 import { Simple } from './Restaurants';
+import { JoinRoom } from './JoinRoom';
 import Cookies from 'js-cookie';
 
 class AddFriend extends Component {
@@ -61,8 +62,9 @@ class AddFriend extends Component {
                 alert("User does not exist, Try again!");
             }
             else {
-                alert('Success! You will be redirected to your room shortly!');
-                this.setState({showRestaurants: true});
+                alert('Success! You will be redirected to join your room shortly!');
+                //this.setState({showRestaurants: true});
+                this.setState({joinroomvisible: true});
                 this.setState({visible: false});
             }
     
@@ -71,7 +73,7 @@ class AddFriend extends Component {
 
     render() {
 
-        const JoinRoom = () => <button className="ui violet button">Join Room</button>
+        //const JoinRoom = () => <button className="ui violet button">Join Room</button>
 
         //const buttonText = this.state.inputfriendvisible ? "Input Friend Username" : "Add Friend";
         //const buttonsubText = this.state.inputfriendvisible ? "" : "Click Here!";

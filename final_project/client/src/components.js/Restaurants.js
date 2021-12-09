@@ -119,7 +119,7 @@ function Simple () {
       .then((json) => setDirection(json))
       )
   
-      console.log(test);
+      console.log(direction);
     }
 
 
