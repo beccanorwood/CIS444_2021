@@ -20,7 +20,6 @@ function App() {
       </div>
     </div>
       <div className="App">
-          <h2>iDunno?</h2>
           <div className='row'>
             <section><UserAuth/></section>
           </div>

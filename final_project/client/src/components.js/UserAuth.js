@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {AddFriend} from './AddFriend';
 import {SignUp} from './SignUp';
 import { Friends } from './Friends';
 import Cookies from 'js-cookie';
+import { Simple } from './Restaurants';
 
 class UserAuth extends Component {
 
@@ -11,7 +11,8 @@ class UserAuth extends Component {
         this.state = {
             'jwt': "",
             visible: true,
-            signupvisible: false
+            signupvisible: false,
+            viewrestaurants: false
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -51,12 +52,17 @@ class UserAuth extends Component {
         else {
             alert("Success! You will now be redirected!");
 
-            window.name = response.token;
-            const jwt = window.name;
-  
-            Cookies.set('jwt', jwt, {expires: 1, path:""})
+            if (response.invited) {
+                alert("You have already been invited to a room!");
+                this.setState({viewrestaurants: true});
+            }
+            else {
+                this.setState({visible: false});
+            }
+
+            Cookies.set('jwt', response.token, {expires: 1, path:""})
             alert(Cookies.get('jwt'));
-            this.setState({visible: false});
+
         }
 
     }
@@ -70,7 +76,11 @@ class UserAuth extends Component {
 
     render() {
 
-        if (!this.state.visible) {
+        if (this.state.viewrestaurants) {
+            return <div><Simple/></div>
+        }
+
+        else if (!this.state.visible) {
             //return <div><AddFriend/></div>   
             return <div><Friends/></div>
         }
@@ -78,7 +88,7 @@ class UserAuth extends Component {
         else if (this.state.signupvisible) {
             return <div><SignUp/></div>
         }
-        
+
         else {
                 return (
                 <>
@@ -100,7 +110,7 @@ class UserAuth extends Component {
                                     <i className="lock icon"></i>
                                 </div>
                                 </div>
-                                <button className="fluid ui violet button" onClick = {async() => {this.CheckCreds(this.state.username, this.state.password)}}>Login</button>
+                                <button className="fluid ui grey button" onClick = {async() => {this.CheckCreds(this.state.username, this.state.password)}}>Login</button>
                             </div>
                             </div>
                             <div className="middle aligned column">

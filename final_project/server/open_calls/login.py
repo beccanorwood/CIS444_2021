@@ -38,6 +38,13 @@ def handle_request():
         cursor.close()
 
         if (bcrypt.checkpw( bytes(password, 'utf-8'), salted_password.encode() )):
-            return json_response( token = create_token(token) , authenticated = True)
+
+            invited = record[7]
+            print(invited)
+
+            if invited == True:
+                return json_response( token = create_token(token), invited = True, authenticated = True)
+            else:
+                return json_response( token = create_token(token) , invited = False, authenticated = True)
         else:
             return json_response( status_ = 401, message = "Invalid password", authenticated = False)

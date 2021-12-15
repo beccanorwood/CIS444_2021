@@ -5,6 +5,8 @@ from tools.logging import logger
 from psycopg2 import sql
 import bcrypt
 
+from DAO import User
+
 def handle_request():
     logger.debug("Signup Handle Request")
 
@@ -37,6 +39,10 @@ def handle_request():
         cursor.execute(sql.SQL("INSERT into users (username, password, firstname, lastname, email) VALUES (%s, %s, %s, %s, %s);"), (username, salted_password.decode('utf-8'), firstname, lastname, email, ))
         g.db.commit()
         cursor.close()
+
+        #Create user object 
+        user = User(username, firstname, lastname, email)
+        
         return json_response(token = create_token(user), authenticated = True)
     else:
         cursor.close()

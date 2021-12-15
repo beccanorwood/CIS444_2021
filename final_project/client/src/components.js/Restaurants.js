@@ -47,127 +47,96 @@ const imgs = [
     }
 ]
 
-function Simple () {
-    const [currentIndex, setCurrentIndex] = useState(imgs.length - 1)
-    const [lastDirection, setLastDirection] = useState()
 
-    const [direction, setDirection] = useState(); //Directions that are sent to API call to check matches 
-
-    // used for outOfFrame closure
-    const currentIndexRef = useRef(currentIndex)
-  
-    const childRefs = useMemo(
-      () =>
-        Array(imgs.length)
-          .fill(0)
-          .map((i) => React.createRef()),
-      []
-    )
-  
-    const updateCurrentIndex = (val) => {
-      setCurrentIndex(val)
-      currentIndexRef.current = val
-    }
-  
-    const canGoBack = currentIndex < imgs.length - 1
-  
-    const canSwipe = currentIndex >= 0
-  
-    // set last direction and decrease current index
-    const swiped = (direction, nameToDelete, index) => {
-      setLastDirection(direction)
-      updateCurrentIndex(index - 1)
-    }
-  
-    const outOfFrame = (name, idx) => {
-      console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current)
-      // handle the case in which go back is pressed before card goes outOfFrame
-      currentIndexRef.current >= idx && childRefs[idx].current.restoreCard()
-      // TODO: when quickly swipe and restore multiple times the same card,
-      // it happens multiple outOfFrame events are queued and the card disappear
-      // during latest swipes. Only the last outOfFrame event should be considered valid
-    }
-  
-    const swipe = async (dir) => {
-      if (canSwipe && currentIndex < imgs.length) {
-        await APITest(dir); //Test API call
-        await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
-      }
-    }
-  
-    // increase current index and show card
-    const goBack = async () => {
-      if (!canGoBack) return
-      const newIndex = currentIndex + 1
-      updateCurrentIndex(newIndex)
-      await childRefs[newIndex].current.restoreCard()
-    }
+function Simple() {
+  const characters = imgs
+  const [lastDirection, setLastDirection] = useState()
 
 
-    const APITest = async (dir) => {
+  const [json, setJSON] = useState(); //response from inserting matches
+  const [matchjson, setMatchJSON] = useState();
 
-      secure_get_with_token(await fetch('/secure_api/checkmatch', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': Cookies.get('jwt')
-        },
-        body: JSON.stringify({direction: dir})
-      })
-      .then((response) => response.json())
-      .then((json) => setDirection(json))
-      )
-  
-      console.log(direction);
-    }
+  const [result, setMatchResult] = useState();
 
+  const swiped = (direction, nameToDelete) => {
+    console.log('removing: ' + nameToDelete)
+    setLastDirection(direction)
 
-    return (
-      <div>
-        <link
-          href='https://fonts.googleapis.com/css?family=Damion&display=swap'
-          rel='stylesheet'
-        />
-        <link
-          href='https://fonts.googleapis.com/css?family=Alatsi&display=swap'
-          rel='stylesheet'
-        />
-        <div className='cardContainer'>
-          {imgs.map((character, index) => (
-            <TinderCard
-              ref={childRefs[index]}
-              className='swipe'
-              key={character.name}
-              onSwipe={(dir) => swiped(dir, character.name, index)}
-              onCardLeftScreen={() => outOfFrame(character.name, index)}
-            >
-              <div
-                style={{ backgroundImage: 'url(' + character.url + ')' }}
-                className='card'
-              >
-                <h3>{character.name}</h3>
-              </div>
-            </TinderCard>
-          ))}
-        </div>
-        <div className='buttons'>
-          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
-          <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button>
-        </div>
-        {lastDirection ? (
-          <h2 key={lastDirection} className='infoText'>
-            You swiped {lastDirection}
-          </h2>
-        ) : (
-          <h2 className='infoText'>
-            Swipe a card or press a button to get Restore Card button visible!
-          </h2>
-        )}
-      </div>
-    )
+    APITest(direction, nameToDelete)
   }
 
+  const outOfFrame = (name) => {
+    console.log(name + ' left the screen!')
+  }
+
+  const APITest = async (dir, name) => {
+
+    secure_get_with_token(await fetch('/secure_api/input_swiped', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': Cookies.get('jwt')
+      },
+      body: JSON.stringify({direction: dir, restaurantname: name})
+    })
+    .then((response) => response.json())
+    .then((json) => setJSON(json))
+    )
+
+  }
+
+  //API call to check matches after time elapsed 
+  useEffect(() => {
+
+      const CheckMatches = setTimeout(() => {
+            secure_get_with_token(fetch('/secure_api/checkmatches', {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': Cookies.get('jwt')
+              },
+            })
+            .then((response) => response.json())
+            .then((json) => setMatchJSON(json))
+            )
+
+            //Check if valid json response was returned to stop infinite loop
+            if (matchjson) {
+              //Check if match was found, if not keep calling function 
+              if (matchjson.message) {
+                alert("Match Found!");
+                alert(matchjson.matches)
+                setMatchResult(matchjson);
+              }
+              else {
+                alert("No match Found!");
+              }
+            }
+        
+          }, 5000);
+        }
+    )
+
+
+  return (
+    <div>
+      <link href='https://fonts.googleapis.com/css?family=Damion&display=swap' rel='stylesheet' />
+      <link href='https://fonts.googleapis.com/css?family=Alatsi&display=swap' rel='stylesheet' />
+      <h1>iDunno?</h1>
+      <div className='cardContainer'>
+        {characters.map((character) =>
+          <TinderCard className='swipe' key={character.name} onSwipe={(dir) => swiped(dir, character.name)} onCardLeftScreen={() => outOfFrame(character.name)}>
+            <div style={{ backgroundImage: 'url(' + character.url + ')' }} className='card'>
+              <h3>{character.name}</h3>
+            </div>
+          </TinderCard>
+        )}
+      </div>
+      {lastDirection ? <h2 className='infoText'>You swiped {lastDirection}</h2> : null}
+    </div>
+  )
+}
 
 export {Simple}

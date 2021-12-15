@@ -12,7 +12,8 @@ from tools.token_required import token_required
 from tools.get_aws_secrets import get_secrets
 
 from tools.logging import logger
-from UserGraph import Graph
+from DAO.Graph import Graph
+
 
 ERROR_MSG = "Ooops.. Didn't work!"
 
@@ -34,9 +35,9 @@ def init_new_env():
 
 #This gets executed by default by the browser if no page is specified
 #So.. we redirect to the endpoint we want to load the base page
-@app.route('/') #endpoint
-def index():
-    return redirect('/static/index.html')
+#@app.route('/') #endpoint
+#def index():
+#    return redirect('/App.js')
 
 
 @app.route("/secure_api/<proc_name>",methods=['GET', 'POST'])

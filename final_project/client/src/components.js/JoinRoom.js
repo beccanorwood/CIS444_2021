@@ -4,18 +4,20 @@ import { Simple } from './Restaurants';
 import Cookies from 'js-cookie';
 
 class JoinRoom extends Component {
+
     constructor() {
         super();
         this.state = {
-            json_response: null,
+            json_response: "",
             visible: true,
+            showRestaurants: false
         }
     }
 
     /**
      * API call to test email request to other user 
      */
-    async startSession() {
+    async startSession(friend_name) {
 
         secure_get_with_token(await fetch('/secure_api/joinroom', {
             method: 'POST',
@@ -24,24 +26,32 @@ class JoinRoom extends Component {
                 'Accept': 'application/json',
                 'Authorization': Cookies.get('jwt')
             },
-            body: JSON.stringify({text: "test"})
+            body: JSON.stringify({friendusername: friend_name})
         })
         .then((response) => response.json())
         .then((json) => this.setState({json_response: json}))
         )
 
-        console.log(this.state.json_response);
+        if (this.state.json_response.status === 200) {
+            this.setState({showRestaurants: true});
+        }
 
     }
+
 
     render() {
 
+        if (this.state.showRestaurants) {
+            return <div><Simple/></div>
+        }
+
         return (
             
-            <button className="ui violet button" onClick = {async () => this.startSession()}>Join Room</button>
-            
+            <button className="ui violet button" onClick = {async () => this.startSession(this.props.friend_name)}>Start Session</button>
+        
         )
     }
+
 }
 
 export {JoinRoom}

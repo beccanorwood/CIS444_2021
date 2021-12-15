@@ -35,29 +35,9 @@ def handle_request():
         return json_response(status_=401, valid = False, message = "Invalid Username")
     else:
 
-        cursor.execute(sql.SQL("SELECT * FROM users WHERE username = %s;"), (currentUser, ))
-        curr_user = cursor.fetchone()
-    
-        curr_user_id = curr_user[0]
-        friend_record_id = friend_record[0]
+        g.graph.addEdge({currentUser, friend_username})
 
-        logger.debug(friend_record)
-        logger.debug(curr_user)
-
-
-        seed(1)
-        value = randint(0, 10)
-
-        print(value)
-
-        cursor.execute(sql.SQL("UPDATE users SET room_code = %s WHERE id = %s;"), (value, curr_user_id, ))
-        cursor.execute(sql.SQL("UPDATE users SET room_code = %s WHERE id = %s;"), (value, friend_record_id, ))
-
-        g.db.commit()
-        cursor.close()
-
-        
-        return json_response(status_= 200, valid = True, message = "Creating private room")
+        return json_response(status_= 200, valid = True, message = "Friend Successfully Added!")
     
 
 

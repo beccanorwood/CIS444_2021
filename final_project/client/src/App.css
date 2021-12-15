@@ -1,22 +1,7 @@
-/*App-header {
-  background-color: #282c34;
-  background: linear-gradient(#7ca6e4, #7178ca);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+addfriend_btn {
+  float: left;
 }
 
-.App-link {
-  color: #61dafb;
-}*/
-
-.friendbutton {
-  width: 100%;
-}
 
 .navbar {
   overflow: hidden;
@@ -79,9 +64,6 @@ h2 {
 
 .card {
   position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(10%, 0%);
   background-color: #fff;
   width: 80vw;
   max-width: 260px;
